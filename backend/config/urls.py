@@ -27,7 +27,7 @@ def health_ready(request):
     except Exception:
         db_ok = False
 
-    # Verify Redis connection
+    # Verify Cache connection
     try:
         cache.set("health_check_ping", "pong", 5)
         redis_ok = cache.get("health_check_ping") == "pong"
@@ -40,7 +40,7 @@ def health_ready(request):
         {
             "status": "ok" if (db_ok and redis_ok) else "degraded",
             "database": "ok" if db_ok else "error",
-            "redis": "ok" if redis_ok else "error",
+            "cache": "ok" if redis_ok else "error",
         },
         status=status_code,
     )

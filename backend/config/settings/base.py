@@ -198,21 +198,27 @@ SIMPLE_JWT = {
 }
 
 # Redis & Celery
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL", "").strip()
 
-CACHES = {
-    "default": {
-        "BACKEND": (
-            "django.core.cache.backends.redis.PyLibMCCache"
-            if "pylibmc" in REDIS_URL
-            else "django.core.cache.backends.redis.RedisCache"
-        ),
-        "LOCATION": REDIS_URL,
+if REDIS_URL and not REDIS_URL.startswith("redis://localhost"):
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": REDIS_URL,
+        }
     }
-}
+    CELERY_BROKER_URL = REDIS_URL
+    CELERY_RESULT_BACKEND = REDIS_URL
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "unique-linkpulse-cache",
+        }
+    }
+    CELERY_BROKER_URL = "memory://"
+    CELERY_RESULT_BACKEND = "rpc://"
 
-CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
