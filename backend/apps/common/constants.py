@@ -1,0 +1,18 @@
+RESERVED_SHORT_CODES = {
+    "api",
+    "admin",
+    "docs",
+    "swagger",
+    "redoc",
+    "health",
+    "metrics",
+    "login",
+    "register",
+    "auth",
+    "dashboard",
+    "static",
+    "media",
+    "favicon.ico",
+    "robots.txt",
+    "sitemap.xml",
+}
