@@ -209,6 +209,7 @@ if REDIS_URL and not REDIS_URL.startswith("redis://localhost"):
     }
     CELERY_BROKER_URL = REDIS_URL
     CELERY_RESULT_BACKEND = REDIS_URL
+    CELERY_TASK_ALWAYS_EAGER = os.getenv("CELERY_TASK_ALWAYS_EAGER", "False").lower() in ("true", "1", "t")
 else:
     CACHES = {
         "default": {
@@ -218,6 +219,8 @@ else:
     }
     CELERY_BROKER_URL = "memory://"
     CELERY_RESULT_BACKEND = "rpc://"
+    CELERY_TASK_ALWAYS_EAGER = True
+    CELERY_TASK_EAGER_PROPAGATES = True
 
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"

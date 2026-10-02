@@ -25,7 +25,7 @@ class ClickTrackingService:
                 "Falling back to synchronous processing."
             )
             try:
-                process_click_event_task(str(link.id), metadata)
+                process_click_event_task.apply(args=[str(link.id), metadata])
             except Exception as sync_err:
                 logger.error(
                     f"Synchronous fallback click processing failed: {sync_err}"

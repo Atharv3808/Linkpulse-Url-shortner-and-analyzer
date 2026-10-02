@@ -69,6 +69,25 @@ class AnalyticsService:
         clicks_this_week = clicks_qs.filter(timestamp__gte=week_start).count()
         clicks_this_month = clicks_qs.filter(timestamp__gte=month_start).count()
 
+        timeline_qs = (
+            clicks_qs.filter(timestamp__gte=month_start)
+            .annotate(period=TruncDay("timestamp"))
+            .values("period")
+            .annotate(
+                clicks=Count("id"),
+                unique_visitors=Count("visitor_id", distinct=True),
+            )
+            .order_by("period")
+        )
+        timeline = [
+            {
+                "date": item["period"].strftime("%Y-%m-%d"),
+                "clicks": item["clicks"],
+                "unique_visitors": item["unique_visitors"],
+            }
+            for item in timeline_qs
+        ]
+
         return {
             "total_clicks": total_clicks,
             "unique_visitors": unique_visitors,
@@ -77,6 +96,7 @@ class AnalyticsService:
             "clicks_today": clicks_today,
             "clicks_this_week": clicks_this_week,
             "clicks_this_month": clicks_this_month,
+            "timeline": timeline,
         }
 
     @classmethod
