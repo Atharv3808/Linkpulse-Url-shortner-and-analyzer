@@ -84,11 +84,13 @@ DATABASE_URL = os.getenv(
 def parse_db_url(url_str):
     url = urllib.parse.urlparse(url_str)
     if url.scheme in ("postgresql", "postgres"):
+        user = urllib.parse.unquote(url.username or "")
+        password = urllib.parse.unquote(url.password or "")
         return {
             "ENGINE": "django.db.backends.postgresql",
             "NAME": url.path[1:] if url.path.startswith("/") else url.path,
-            "USER": url.username or "",
-            "PASSWORD": url.password or "",
+            "USER": user,
+            "PASSWORD": password,
             "HOST": url.hostname or "",
             "PORT": url.port or "",
         }
