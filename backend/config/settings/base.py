@@ -17,7 +17,12 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-linkpulse-default-secret-k
 
 DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "t")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+raw_hosts = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.onrender.com,*").split(",")
+ALLOWED_HOSTS = [h.strip() for h in raw_hosts if h.strip()]
+
+render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+if render_host and render_host not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(render_host)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -133,16 +138,21 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS & CSRF Settings
+CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "True").lower() in ("true", "1", "t")
+
 CORS_ALLOWED_ORIGINS = [
     origin.strip()
-    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",")
     if origin.strip()
 ]
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173")).split(",")
+    for origin in os.getenv(
+        "CSRF_TRUSTED_ORIGINS",
+        "https://*.onrender.com,https://*.vercel.app,http://localhost:5173,http://localhost:3000"
+    ).split(",")
     if origin.strip()
 ]
 
