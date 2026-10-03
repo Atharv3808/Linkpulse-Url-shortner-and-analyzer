@@ -7,7 +7,7 @@ import { formatNumber, formatDate } from "../../lib/formatters";
 import { ApplicationShell } from "../../components/layout/ApplicationShell";
 import { Card } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
-import { CardSkeleton } from "../../components/ui/Skeleton";
+import { CardSkeleton, TableSkeleton } from "../../components/ui/Skeleton";
 import { EmptyState } from "../../components/feedback/EmptyState";
 import { CreateCampaignModal } from "./CreateCampaignModal";
 
@@ -25,14 +25,14 @@ export function CampaignsPage() {
     <ApplicationShell title="Campaigns">
       <div className="space-y-6">
         {/* Header Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-5">
           <div>
-            <h2 className="text-xl font-semibold text-txt-primary tracking-tight">Campaigns</h2>
-            <p className="text-xs text-txt-secondary mt-0.5">
-              Organize links and measure campaign performance across marketing channels.
+            <h2 className="text-xl font-bold text-txt-primary tracking-tight">Campaigns</h2>
+            <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
+              Group your links and measure campaign performance across marketing channels.
             </p>
           </div>
-          <Button onClick={() => setIsCreateOpen(true)} icon={Plus}>
+          <Button onClick={() => setIsCreateOpen(true)} variant="primary" size="sm" icon={Plus}>
             Create campaign
           </Button>
         </div>
@@ -48,7 +48,7 @@ export function CampaignsPage() {
           <EmptyState
             icon={FolderKanban}
             title="No campaigns yet"
-            description="Organize your short links into campaigns for unified traffic intelligence."
+            description="Group your short links into campaigns to measure aggregated channel ROI."
             actionLabel="Create campaign"
             onAction={() => setIsCreateOpen(true)}
           />
@@ -58,7 +58,7 @@ export function CampaignsPage() {
               <Card key={cmp.id} className="hover:border-border-hover transition-colors flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border-subtle flex items-center justify-center text-txt-secondary">
+                    <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border-subtle flex items-center justify-center text-accent-purple">
                       <FolderKanban className="w-4 h-4" />
                     </div>
                     <span className="text-[11px] text-txt-muted flex items-center space-x-1 font-numeric">

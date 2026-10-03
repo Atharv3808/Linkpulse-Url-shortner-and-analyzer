@@ -1,9 +1,12 @@
 import React from "react";
 
-export function Card({ children, className = "", ...props }) {
+export function Card({ children, className = "", onClick, ...props }) {
   return (
     <div
-      className={`bg-bg-surface border border-border-subtle rounded-xl p-5 sm:p-6 shadow-xs ${className}`}
+      onClick={onClick}
+      className={`bg-bg-card border border-border-subtle rounded-xl p-4.5 transition-all duration-150 ${
+        onClick ? "cursor-pointer hover:border-border-hover" : ""
+      } ${className}`}
       {...props}
     >
       {children}
@@ -11,11 +14,11 @@ export function Card({ children, className = "", ...props }) {
   );
 }
 
-export function CardHeader({ title, description, action }) {
+export function CardHeader({ title, description, action, className = "" }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5 pb-4 border-b border-border-subtle">
+    <div className={`flex items-start justify-between gap-4 mb-4 ${className}`}>
       <div>
-        <h3 className="text-base font-semibold text-txt-primary tracking-tight">{title}</h3>
+        <h3 className="text-sm font-semibold text-txt-primary tracking-tight">{title}</h3>
         {description && (
           <p className="text-xs text-txt-secondary mt-0.5">{description}</p>
         )}

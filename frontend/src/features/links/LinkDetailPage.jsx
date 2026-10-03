@@ -75,7 +75,7 @@ export function LinkDetailPage() {
 
   if (error) {
     return (
-      <ApplicationShell title="Link analytics">
+      <ApplicationShell title="Link Analytics">
         <div className="py-12">
           <EmptyState
             title="Unable to load analytics"
@@ -89,23 +89,24 @@ export function LinkDetailPage() {
   }
 
   return (
-    <ApplicationShell title="Link analytics">
+    <ApplicationShell title="Link Analytics">
       <div className="space-y-6">
-        {/* Navigation & Period Filter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Navigation & Period Filter Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-5">
           <button
+            type="button"
             onClick={() => navigate("/app/links")}
             className="inline-flex items-center space-x-2 text-xs font-semibold text-txt-secondary hover:text-txt-primary transition-colors w-fit"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>← Links</span>
+            <span>← Back to links</span>
           </button>
 
           <div className="flex items-center space-x-2">
             <select
               value={range}
               onChange={(e) => setRange(e.target.value)}
-              className="bg-bg-elevated border border-border-subtle text-txt-secondary text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-accent-purple/60 focus:ring-1 focus:ring-accent-purple/40 min-h-[36px]"
+              className="bg-bg-elevated border border-border-subtle text-txt-secondary text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-accent-purple/60 focus:ring-1 focus:ring-accent-purple/40 min-h-[34px]"
             >
               <option value="today">Today</option>
               <option value="24h">Last 24 hours</option>
@@ -139,7 +140,7 @@ export function LinkDetailPage() {
                   </h2>
                   {link.short_code && <Badge variant="purple">/{link.short_code}</Badge>}
                 </div>
-                <p className="text-xs text-txt-secondary truncate max-w-xl">
+                <p className="text-xs text-txt-secondary truncate max-w-xl font-mono">
                   {link.original_url}
                 </p>
               </div>
@@ -177,7 +178,7 @@ export function LinkDetailPage() {
           </Card>
         )}
 
-        {/* Traffic Intelligence / Insights */}
+        {/* Traffic Intelligence Insights */}
         {insights.length > 0 && (
           <div className="bg-bg-elevated/60 border border-border-subtle rounded-xl p-4 flex items-start space-x-3 text-xs text-txt-primary">
             <Sparkles className="w-4 h-4 text-accent-purple shrink-0 mt-0.5" />
@@ -192,7 +193,7 @@ export function LinkDetailPage() {
           </div>
         )}
 
-        {/* Key Summary Metrics Grid */}
+        {/* Summary Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <div className="flex items-center justify-between">
@@ -201,7 +202,7 @@ export function LinkDetailPage() {
               </span>
               <MousePointerClick className="w-4 h-4 text-txt-muted" />
             </div>
-            <p className="text-2xl font-bold text-txt-primary mt-2 font-numeric">
+            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
               {formatNumber(summary.total_clicks ?? 0)}
             </p>
           </Card>
@@ -213,7 +214,7 @@ export function LinkDetailPage() {
               </span>
               <Users className="w-4 h-4 text-txt-muted" />
             </div>
-            <p className="text-2xl font-bold text-txt-primary mt-2 font-numeric">
+            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
               {formatNumber(summary.unique_visitors ?? 0)}
             </p>
           </Card>
@@ -221,11 +222,11 @@ export function LinkDetailPage() {
           <Card>
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-txt-secondary">
-                Human visitors
+                Human traffic
               </span>
               <UserCheck className="w-4 h-4 text-txt-muted" />
             </div>
-            <p className="text-2xl font-bold text-txt-primary mt-2 font-numeric">
+            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
               {formatNumber(summary.human_clicks ?? 0)}
             </p>
           </Card>
@@ -237,27 +238,27 @@ export function LinkDetailPage() {
               </span>
               <Bot className="w-4 h-4 text-txt-muted" />
             </div>
-            <p className="text-2xl font-bold text-txt-primary mt-2 font-numeric">
+            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
               {formatNumber(summary.bot_clicks ?? 0)}
             </p>
           </Card>
         </div>
 
-        {/* Click Volume Timeline */}
+        {/* Click Performance Chart */}
         <Card>
           <CardHeader
-            title="Clicks over time"
-            description="Daily click activity breakdown for selected period"
+            title="Click performance"
+            description="Daily traffic trends and unique visitor activity over time"
           />
           {isLoading ? <CardSkeleton /> : <ClickTimelineChart data={timeline} />}
         </Card>
 
-        {/* Breakdown Grid */}
+        {/* Audience Breakdown Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Countries */}
+          {/* Top Locations */}
           <Card>
             <CardHeader
-              title="Top countries"
+              title="Top locations"
               description="Visitor geographic distribution"
             />
             {isLoading ? <CardSkeleton /> : <CountryBarChart countries={countries} />}
@@ -267,16 +268,16 @@ export function LinkDetailPage() {
           <Card>
             <CardHeader
               title="Devices"
-              description="Device types and user agents"
+              description="User agent and device type distribution"
             />
             {isLoading ? <CardSkeleton /> : <DeviceDonutChart devices={devices} />}
           </Card>
 
-          {/* Referrers */}
+          {/* Traffic Sources */}
           <Card>
             <CardHeader
-              title="Referrers"
-              description="Top referring domains"
+              title="Traffic sources"
+              description="Top referring domains and platforms"
             />
             {isLoading ? (
               <CardSkeleton />

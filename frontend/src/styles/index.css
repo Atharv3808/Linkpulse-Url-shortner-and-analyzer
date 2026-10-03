@@ -5,13 +5,64 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-bg-dark text-txt-primary font-sans antialiased selection:bg-accent-purple/30 selection:text-white;
-    background-color: #090A0D;
-    color: #F3F5F9;
+  :root, html.dark {
+    /* Dark Theme Palette (Default) */
+    --bg-dark: #08090B;
+    --bg-sidebar: #0C0D10;
+    --bg-surface: #0D0F12;
+    --bg-secondary: #12151A;
+    --bg-elevated: #171A20;
+    --bg-card: #0D0F12;
+
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.15);
+
+    --txt-primary: #F5F7FA;
+    --txt-secondary: #9AA3B2;
+    --txt-muted: #697386;
+
+    --accent-purple: #7C6CFF;
+    --accent-purple-hover: #6B59FF;
+    --accent-teal: #35C99A;
+    --accent-green: #35C99A;
+    --accent-yellow: #EAB35A;
+    --accent-red: #EF6B73;
   }
 
-  /* Tabular numbers for clean numeric metrics */
+  html.light {
+    /* Light Theme Palette */
+    --bg-dark: #F7F8FA;
+    --bg-sidebar: #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-secondary: #F3F4F6;
+    --bg-elevated: #FFFFFF;
+    --bg-card: #FFFFFF;
+
+    --border-subtle: #E5E7EB;
+    --border-hover: #D1D5DB;
+
+    --txt-primary: #111318;
+    --txt-secondary: #667085;
+    --txt-muted: #98A2B3;
+
+    --accent-purple: #6758E8;
+    --accent-purple-hover: #5547D2;
+    --accent-teal: #159570;
+    --accent-green: #159570;
+    --accent-yellow: #D97706;
+    --accent-red: #E11D48;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--txt-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  /* Tabular numbers for clean numeric stats */
   .font-numeric {
     font-variant-numeric: tabular-nums;
   }
@@ -23,12 +74,12 @@
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090A0D;
+  background: var(--bg-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-subtle);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--border-hover);
 }

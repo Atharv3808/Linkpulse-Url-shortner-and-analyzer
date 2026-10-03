@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Building, Plus, Users, Trash2, UserPlus, Check } from "lucide-react";
+import { Building2, Users, Trash2, UserPlus, Check } from "lucide-react";
 import { workspacesApi } from "../../api/workspaces.api";
 import { queryKeys } from "../../lib/queryKeys";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -42,11 +42,11 @@ export function WorkspacesPage() {
   return (
     <ApplicationShell title="Workspace">
       <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-semibold text-txt-primary tracking-tight">
+        <div className="border-b border-border-subtle pb-5">
+          <h2 className="text-xl font-bold text-txt-primary tracking-tight">
             Workspaces & Team
           </h2>
-          <p className="text-xs text-txt-secondary mt-0.5">
+          <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
             Switch active workspace context or manage team member access and permissions.
           </p>
         </div>
@@ -75,7 +75,7 @@ export function WorkspacesPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2.5">
-                        <Building className={`w-4 h-4 ${isSelected ? "text-accent-purple" : "text-txt-muted"}`} />
+                        <Building2 className={`w-4 h-4 ${isSelected ? "text-accent-purple" : "text-txt-muted"}`} />
                         <h4 className="font-semibold text-xs text-txt-primary">{ws.name}</h4>
                       </div>
                       {isSelected && (
@@ -85,7 +85,7 @@ export function WorkspacesPage() {
                       )}
                     </div>
                     <div className="flex items-center justify-between mt-3 text-xs">
-                      <Badge variant={ws.role === "OWNER" ? "purple" : "neutral"}>
+                      <Badge variant={ws.role === "OWNER" ? "purple" : "default"}>
                         {ws.role}
                       </Badge>
                       <span className="text-txt-muted font-numeric">
@@ -104,7 +104,7 @@ export function WorkspacesPage() {
           <Card className="p-0 overflow-hidden">
             <div className="p-5 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-base font-semibold text-txt-primary">
+                <h3 className="text-sm font-semibold text-txt-primary">
                   Members in {activeWorkspace?.name || "Workspace"}
                 </h3>
                 <p className="text-xs text-txt-secondary mt-0.5">
@@ -143,13 +143,14 @@ export function WorkspacesPage() {
                         </td>
                         <td className="px-5 py-3.5 text-txt-secondary">{m.user?.email}</td>
                         <td className="px-5 py-3.5">
-                          <Badge variant={m.role === "OWNER" ? "purple" : "neutral"}>
+                          <Badge variant={m.role === "OWNER" ? "purple" : "default"}>
                             {m.role}
                           </Badge>
                         </td>
                         <td className="px-5 py-3.5 text-right">
                           {m.role !== "OWNER" && (
                             <button
+                              type="button"
                               onClick={() => {
                                 if (window.confirm("Remove member from workspace?")) {
                                   removeMemberMutation.mutate({ wsId: activeWsId, memberId: m.id });

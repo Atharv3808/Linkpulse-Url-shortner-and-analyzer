@@ -39,24 +39,24 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-dark flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6 bg-bg-surface border border-border-subtle p-8 rounded-xl shadow-2xl">
-        {/* Header */}
+    <div className="min-h-screen bg-bg-dark flex items-center justify-center p-4 transition-colors duration-150">
+      <div className="w-full max-w-md space-y-6 bg-bg-surface border border-border-subtle p-8 rounded-xl shadow-popover">
+        {/* Crisp Minimal Logo Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-accent-purple/15 text-accent-purple mb-1 border border-accent-purple/30">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-accent-purple/10 text-accent-purple mb-1 border border-accent-purple/25">
             <Zap className="w-5 h-5 fill-current" />
           </div>
-          <h2 className="text-xl font-semibold tracking-tight text-txt-primary">
+          <h2 className="text-xl font-bold tracking-tight text-txt-primary">
             Sign in to LinkPulse
           </h2>
-          <p className="text-xs text-txt-secondary">
-            Access your short links and click intelligence dashboard
+          <p className="text-xs text-txt-secondary leading-relaxed">
+            Access your short links and click intelligence workspace
           </p>
         </div>
 
         {/* Error Alert */}
         {errorMsg && (
-          <div className="p-3 bg-accent-red/10 border border-accent-red/20 rounded-lg flex items-center space-x-2.5 text-xs text-accent-red">
+          <div className="p-3 bg-accent-red/10 border border-accent-red/20 rounded-lg flex items-center space-x-2.5 text-xs text-accent-red font-medium">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -87,7 +87,7 @@ export function LoginPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-7 text-txt-muted hover:text-txt-primary transition-colors"
+              className="absolute right-3 top-7.5 text-txt-muted hover:text-txt-primary transition-colors"
               aria-label="Toggle password visibility"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}

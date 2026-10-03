@@ -9,6 +9,7 @@ import {
   BarChart2,
   ExternalLink,
   Trash2,
+  Filter,
 } from "lucide-react";
 import { linksApi } from "../../api/links.api";
 import { queryKeys } from "../../lib/queryKeys";
@@ -57,27 +58,29 @@ export function LinksPage() {
   return (
     <ApplicationShell title="Links">
       <div className="space-y-6">
-        {/* Header & Description */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Header & Primary Action */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-5">
           <div>
-            <h2 className="text-xl font-semibold text-txt-primary tracking-tight">
+            <h2 className="text-xl font-bold text-txt-primary tracking-tight">
               Links
             </h2>
-            <p className="text-xs text-txt-secondary mt-0.5">
-              Create and manage your short links.
+            <p className="text-xs text-txt-secondary mt-1 leading-relaxed max-w-xl">
+              Create, organize and monitor your short links and custom alias destinations.
             </p>
           </div>
 
           <Button
             onClick={() => setIsCreateModalOpen(true)}
+            variant="primary"
+            size="sm"
             icon={Plus}
           >
             Create link
           </Button>
         </div>
 
-        {/* Search & Filter Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        {/* Search & Toolbar Controls */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex-1 max-w-md">
             <Input
               placeholder="Search by title, short code, or URL..."
@@ -87,16 +90,20 @@ export function LinksPage() {
             />
           </div>
 
-          <div className="w-full sm:w-auto">
-            <select
-              value={activeFilter}
-              onChange={(e) => setActiveFilter(e.target.value)}
-              className="w-full sm:w-auto bg-bg-elevated border border-border-subtle text-txt-secondary text-xs rounded-lg px-3 py-2 min-h-[38px] focus:outline-none focus:border-accent-purple/60 focus:ring-1 focus:ring-accent-purple/40"
-            >
-              <option value="">All status</option>
-              <option value="true">Active</option>
-              <option value="false">Disabled</option>
-            </select>
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1.5 bg-bg-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-txt-muted">
+              <Filter className="w-3.5 h-3.5" />
+              <span className="font-medium text-txt-secondary hidden sm:inline">Status:</span>
+              <select
+                value={activeFilter}
+                onChange={(e) => setActiveFilter(e.target.value)}
+                className="bg-transparent text-txt-primary focus:outline-none cursor-pointer"
+              >
+                <option value="">All status</option>
+                <option value="true">Active</option>
+                <option value="false">Disabled</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -109,11 +116,11 @@ export function LinksPage() {
           ) : links.length === 0 ? (
             <div className="p-6">
               <EmptyState
-                title="No links yet"
+                title="No links found"
                 description={
                   search
-                    ? "No links match your search query."
-                    : "Create your first short link to start tracking traffic."
+                    ? "No short links match your current search query."
+                    : "Create your first short link and start tracking clicks."
                 }
                 actionLabel="Create link"
                 onAction={() => setIsCreateModalOpen(true)}
@@ -126,7 +133,7 @@ export function LinksPage() {
                 <table className="w-full text-left text-xs">
                   <thead className="bg-bg-elevated/40 text-txt-muted uppercase tracking-wider border-b border-border-subtle">
                     <tr>
-                      <th className="px-5 py-3 font-semibold">Short URL</th>
+                      <th className="px-5 py-3 font-semibold">Short Link</th>
                       <th className="px-5 py-3 font-semibold">Destination URL</th>
                       <th className="px-5 py-3 font-semibold text-right">Clicks</th>
                       <th className="px-5 py-3 font-semibold">Status</th>
@@ -138,9 +145,20 @@ export function LinksPage() {
                     {links.map((link) => (
                       <tr key={link.id} className="hover:bg-bg-elevated/40 transition-colors">
                         <td className="px-5 py-3.5 font-medium text-txt-primary">
-                          <span className="text-accent-purple font-semibold">
-                            /{link.short_code}
-                          </span>
+                          <div className="space-y-0.5">
+                            {link.title && (
+                              <p className="font-semibold text-txt-primary truncate max-w-xs">
+                                {link.title}
+                              </p>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => navigate(`/app/links/${link.id}`)}
+                              className="text-accent-purple font-semibold hover:underline"
+                            >
+                              /{link.short_code}
+                            </button>
+                          </div>
                         </td>
                         <td className="px-5 py-3.5 text-txt-secondary max-w-xs truncate">
                           <a
@@ -161,12 +179,13 @@ export function LinksPage() {
                             {link.is_active ? "Active" : "Disabled"}
                           </Badge>
                         </td>
-                        <td className="px-5 py-3.5 text-txt-muted">
+                        <td className="px-5 py-3.5 text-txt-muted font-numeric">
                           {formatDate(link.created_at)}
                         </td>
                         <td className="px-5 py-3.5 text-right">
                           <div className="flex items-center justify-end space-x-1">
                             <button
+                              type="button"
                               onClick={() => copy(link.short_url, "Short URL")}
                               title="Copy Short URL"
                               className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
@@ -174,6 +193,7 @@ export function LinksPage() {
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             <button
+                              type="button"
                               onClick={() => setSelectedQrLink(link)}
                               title="View QR Code"
                               className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
@@ -181,6 +201,7 @@ export function LinksPage() {
                               <QrCode className="w-3.5 h-3.5" />
                             </button>
                             <button
+                              type="button"
                               onClick={() => navigate(`/app/links/${link.id}`)}
                               title="View Analytics"
                               className="p-1.5 text-accent-purple hover:bg-accent-purple/10 rounded-md transition-colors"
@@ -189,6 +210,7 @@ export function LinksPage() {
                             </button>
                             {link.is_active && (
                               <button
+                                type="button"
                                 onClick={() => {
                                   if (window.confirm("Deactivate this short link?")) {
                                     deleteMutation.mutate(link.id);
@@ -213,9 +235,14 @@ export function LinksPage() {
                 {links.map((link) => (
                   <div key={link.id} className="p-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-accent-purple">
-                        /{link.short_code}
-                      </span>
+                      <div className="space-y-0.5">
+                        {link.title && (
+                          <p className="text-xs font-semibold text-txt-primary">{link.title}</p>
+                        )}
+                        <span className="text-sm font-bold text-accent-purple">
+                          /{link.short_code}
+                        </span>
+                      </div>
                       <Badge variant={link.is_active ? "active" : "inactive"}>
                         {link.is_active ? "Active" : "Disabled"}
                       </Badge>
@@ -225,20 +252,22 @@ export function LinksPage() {
                       {link.original_url}
                     </p>
 
-                    <div className="flex items-center justify-between text-xs pt-1">
+                    <div className="flex items-center justify-between text-xs pt-1 border-t border-border-subtle/50">
                       <span className="text-txt-muted font-numeric">
                         {formatNumber(link.click_count)} clicks
                       </span>
                       <div className="flex items-center space-x-2">
                         <button
+                          type="button"
                           onClick={() => copy(link.short_url, "Short URL")}
-                          className="px-2 py-1 text-[11px] font-medium bg-bg-elevated text-txt-primary rounded border border-border-subtle"
+                          className="px-2.5 py-1 text-[11px] font-medium bg-bg-elevated text-txt-primary rounded-md border border-border-subtle"
                         >
                           Copy
                         </button>
                         <button
+                          type="button"
                           onClick={() => navigate(`/app/links/${link.id}`)}
-                          className="px-2 py-1 text-[11px] font-medium bg-accent-purple/10 text-accent-purple rounded border border-accent-purple/20"
+                          className="px-2.5 py-1 text-[11px] font-medium bg-accent-purple/10 text-accent-purple rounded-md border border-accent-purple/20"
                         >
                           Analytics
                         </button>

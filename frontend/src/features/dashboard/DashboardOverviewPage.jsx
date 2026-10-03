@@ -6,20 +6,22 @@ import {
   Users,
   Link2,
   Bot,
-  TrendingUp,
   ExternalLink,
   Copy,
   QrCode,
   BarChart2,
   ArrowUpRight,
   Plus,
+  Share2,
+  Globe,
+  Monitor,
 } from "lucide-react";
 import { analyticsApi } from "../../api/analytics.api";
 import { linksApi } from "../../api/links.api";
 import { queryKeys } from "../../lib/queryKeys";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useCopy } from "../../hooks/useCopy";
-import { formatNumber, formatDate, truncateUrl } from "../../lib/formatters";
+import { formatNumber, truncateUrl } from "../../lib/formatters";
 import { ApplicationShell } from "../../components/layout/ApplicationShell";
 import { Card, CardHeader } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
@@ -31,7 +33,7 @@ import { QRCodeModal } from "../links/QRCodeModal";
 
 export function DashboardOverviewPage() {
   const navigate = useNavigate();
-  const { activeWorkspace, user } = useAuthStore();
+  const { activeWorkspace } = useAuthStore();
   const { copy } = useCopy();
 
   const [selectedQrLink, setSelectedQrLink] = useState(null);
@@ -42,7 +44,7 @@ export function DashboardOverviewPage() {
     queryFn: () => analyticsApi.getOverview(activeWorkspace?.id),
   });
 
-  // Fetch Links List for table preview
+  // Fetch Recent Links List
   const { data: linksRes, isLoading: isLinksLoading } = useQuery({
     queryKey: queryKeys.links.all({ page_size: 5 }),
     queryFn: () => linksApi.list({ page_size: 5 }),
@@ -81,34 +83,44 @@ export function DashboardOverviewPage() {
   return (
     <ApplicationShell title="Overview">
       <div className="space-y-6">
-        {/* Welcome Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Header with Title, Concise Description, and Action */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-5">
           <div>
-            <h2 className="text-xl font-semibold text-txt-primary tracking-tight">
+            <h2 className="text-xl font-bold text-txt-primary tracking-tight">
               Overview
             </h2>
-            <p className="text-xs text-txt-secondary mt-0.5">
-              Track how your links are performing across your active workspace.
+            <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
+              Track your links, understand your audience, and measure what is working across your active workspace.
             </p>
+          </div>
+
+          <div className="flex items-center space-x-2 shrink-0">
+            <Link to="/app/links">
+              <Button variant="primary" size="sm" icon={Plus}>
+                Create link
+              </Button>
+            </Link>
           </div>
         </div>
 
-        {/* 4 KPI Cards */}
+        {/* 4 Primary KPI Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {isOverviewLoading
             ? Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)
             : kpis.map((kpi, idx) => {
                 const Icon = kpi.icon;
                 return (
-                  <Card key={idx} className="relative flex flex-col justify-between">
+                  <Card key={idx} className="relative flex flex-col justify-between hover:border-border-hover transition-colors">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-medium text-txt-secondary">
                         {kpi.title}
                       </span>
-                      <Icon className="w-4 h-4 text-txt-muted shrink-0" />
+                      <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-md text-txt-muted">
+                        <Icon className="w-3.5 h-3.5" />
+                      </div>
                     </div>
                     <div className="mt-3">
-                      <span className="text-2xl font-bold text-txt-primary font-numeric">
+                      <span className="text-2.5xl font-bold text-txt-primary font-numeric tracking-tight">
                         {formatNumber(kpi.value)}
                       </span>
                       <p className="text-[11px] text-txt-muted mt-1">{kpi.subtitle}</p>
@@ -118,11 +130,11 @@ export function DashboardOverviewPage() {
               })}
         </div>
 
-        {/* Clicks Timeline Chart */}
+        {/* Click Performance Timeline Chart */}
         <Card>
           <CardHeader
-            title="Click timeline"
-            description="Aggregated daily traffic volume over time"
+            title="Click performance"
+            description="Daily traffic volume and unique visitor trends"
           />
           {isOverviewLoading ? (
             <div className="h-64 flex items-center justify-center">
@@ -137,7 +149,7 @@ export function DashboardOverviewPage() {
         <Card>
           <CardHeader
             title="Recent links"
-            description="Manage recent short link destinations and click stats"
+            description="Manage recent short links and view quick click statistics"
             action={
               <Link
                 to="/app/links"
@@ -154,7 +166,7 @@ export function DashboardOverviewPage() {
           ) : links.length === 0 ? (
             <EmptyState
               title="No links yet"
-              description="Create your first short link to start tracking traffic."
+              description="Create your first short link to start tracking click performance."
               actionLabel="Create short link"
               onAction={() => navigate("/app/links")}
             />
@@ -174,9 +186,14 @@ export function DashboardOverviewPage() {
                   {links.map((link) => (
                     <tr key={link.id} className="hover:bg-bg-elevated/40 transition-colors">
                       <td className="px-4 py-3 font-medium text-txt-primary">
-                        <span className="text-accent-purple font-semibold">
-                          /{link.short_code}
-                        </span>
+                        <div className="flex items-center space-x-2">
+                          <Link
+                            to={`/app/links/${link.id}`}
+                            className="text-accent-purple hover:underline font-semibold"
+                          >
+                            /{link.short_code}
+                          </Link>
+                        </div>
                       </td>
                       <td className="px-4 py-3 text-txt-secondary">
                         <a
@@ -185,7 +202,7 @@ export function DashboardOverviewPage() {
                           rel="noreferrer"
                           className="hover:underline hover:text-txt-primary inline-flex items-center space-x-1 max-w-xs truncate"
                         >
-                          <span>{truncateUrl(link.original_url, 35)}</span>
+                          <span>{truncateUrl(link.original_url, 40)}</span>
                           <ExternalLink className="w-3 h-3 text-txt-muted shrink-0" />
                         </a>
                       </td>
@@ -202,21 +219,21 @@ export function DashboardOverviewPage() {
                           <button
                             onClick={() => copy(link.short_url, "Short URL")}
                             title="Copy Short URL"
-                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md"
+                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
                           >
                             <Copy className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => setSelectedQrLink(link)}
                             title="View QR Code"
-                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md"
+                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
                           >
                             <QrCode className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => navigate(`/app/links/${link.id}`)}
                             title="View Link Analytics"
-                            className="p-1.5 text-accent-purple hover:bg-accent-purple/10 rounded-md"
+                            className="p-1.5 text-accent-purple hover:bg-accent-purple/10 rounded-md transition-colors"
                           >
                             <BarChart2 className="w-3.5 h-3.5" />
                           </button>
