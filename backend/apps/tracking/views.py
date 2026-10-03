@@ -3,11 +3,9 @@ import uuid
 
 from django.conf import settings
 from django.db.models import F
-from django.http import Http404, HttpResponseNotFound
+from django.http import HttpResponseNotFound
 from django.shortcuts import redirect
-from drf_spectacular.utils import extend_schema
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
+from django.views import View
 
 from apps.links.models import ShortLink
 from apps.tracking.parsers import RequestMetadataExtractor
@@ -16,17 +14,21 @@ from apps.tracking.services import ClickTrackingService
 logger = logging.getLogger("linkpulse")
 
 
-def render_error_html(request, title: str, message: str, short_code: str, status_tag: str):
+def render_error_page(
+    title: str,
+    headline: str,
+    message: str,
+    short_code: str,
+    status_tag: str,
+):
     """
-    Renders a clean, branded HTML error notice when short links are expired,
-    disabled, or non-existent (e.g. when visited via browser or QR code scanner).
+    Renders a standalone, beautifully formatted HTML error page when short links are expired,
+    disabled, or non-existent (when visited in a browser or scanned via QR code).
     """
-    accept_header = request.headers.get("Accept", "")
-    # If explicit JSON client (like API test without HTML accept), fall back to DRF Http404
-    if "application/json" in accept_header and "text/html" not in accept_header:
-        raise Http404(message)
-
-    frontend_url = getattr(settings, "FRONTEND_URL", "https://linkpulse-analyzer.vercel.app")
+    frontend_url = getattr(
+        settings, "FRONTEND_URL", "https://linkpulse-analyzer.vercel.app"
+    ).rstrip("/")
+    create_link_url = f"{frontend_url}/app/dashboard"
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -52,16 +54,34 @@ def render_error_html(request, title: str, message: str, short_code: str, status
             align-items: center;
             justify-content: center;
             padding: 24px;
+            -webkit-font-smoothing: antialiased;
+        }}
+        .container {{
+            width: 100%;
+            max-width: 540px;
+        }}
+        .brand-header {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }}
+        .brand-logo {{
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            color: #141414;
+            text-decoration: none;
         }}
         .card {{
             width: 100%;
-            max-width: 520px;
             border: 2px solid #141414;
             background-color: #FFFFFF;
-            padding: 36px;
+            padding: 40px;
             box-shadow: 6px 6px 0px 0px #141414;
         }}
-        .header {{
+        .header-row {{
             display: flex;
             align-items: center;
             gap: 16px;
@@ -69,19 +89,19 @@ def render_error_html(request, title: str, message: str, short_code: str, status
             border-bottom: 1px solid #141414;
             margin-bottom: 24px;
         }}
-        .badge {{
-            width: 44px;
-            height: 44px;
+        .icon-box {{
+            width: 48px;
+            height: 48px;
             background-color: #B91C1C;
             color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 22px;
+            font-size: 24px;
             flex-shrink: 0;
         }}
-        .system-tag {{
+        .tag {{
             font-family: monospace;
             font-size: 10px;
             font-weight: 700;
@@ -91,7 +111,7 @@ def render_error_html(request, title: str, message: str, short_code: str, status
             display: block;
             margin-bottom: 4px;
         }}
-        .title {{
+        .headline {{
             font-size: 24px;
             font-weight: 900;
             text-transform: uppercase;
@@ -106,7 +126,7 @@ def render_error_html(request, title: str, message: str, short_code: str, status
             line-height: 1.6;
             margin-bottom: 24px;
         }}
-        .code-box {{
+        .details-box {{
             border: 1px solid #C7C7C7;
             background-color: #F8F9FA;
             padding: 14px 18px;
@@ -118,10 +138,15 @@ def render_error_html(request, title: str, message: str, short_code: str, status
             justify-content: space-between;
             align-items: center;
         }}
-        .code-box span {{
+        .details-box span {{
             color: #7A7A7A;
         }}
-        .btn {{
+        .actions {{
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }}
+        .btn-primary {{
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -135,58 +160,97 @@ def render_error_html(request, title: str, message: str, short_code: str, status
             letter-spacing: 0.08em;
             text-decoration: none;
             border: 1px solid #1351AA;
-            transition: background-color 0.2s ease;
+            transition: all 0.2s ease;
         }}
-        .btn:hover {{
+        .btn-primary:hover {{
             background-color: #141414;
             border-color: #141414;
+        }}
+        .btn-secondary {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 48px;
+            background-color: #FFFFFF;
+            color: #141414;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            border: 1px solid #141414;
+            transition: all 0.2s ease;
+        }}
+        .btn-secondary:hover {{
+            background-color: #141414;
+            color: #FFFFFF;
+        }}
+        .footer-note {{
+            margin-top: 24px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 11px;
+            color: #7A7A7A;
+            text-transform: uppercase;
         }}
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="header">
-            <div class="badge">!</div>
-            <div>
-                <span class="system-tag">LINKPULSE / {status_tag}</span>
-                <h1 class="title">{title}</h1>
+    <div class="container">
+        <div class="brand-header">
+            <a href="{frontend_url}" class="brand-logo">LINKPULSE</a>
+            <span style="font-family: monospace; font-size: 10px; color: #7A7A7A; font-weight: 700; text-transform: uppercase;">LINK INTELLIGENCE</span>
+        </div>
+        <div class="card">
+            <div class="header-row">
+                <div class="icon-box">!</div>
+                <div>
+                    <span class="tag">NOTICE / {status_tag}</span>
+                    <h1 class="headline">{headline}</h1>
+                </div>
+            </div>
+            <p class="message">{message}</p>
+            <div class="details-box">
+                <div>
+                    <span>SHORT CODE: </span>
+                    <strong>/{short_code}</strong>
+                </div>
+                <div>
+                    <span>STATUS: </span>
+                    <strong style="color: #B91C1C;">{status_tag}</strong>
+                </div>
+            </div>
+            <div class="actions">
+                <a href="{create_link_url}" class="btn-primary">CREATE A NEW LINK &rarr;</a>
+                <a href="{frontend_url}" class="btn-secondary">GO TO LINKPULSE HOME</a>
             </div>
         </div>
-        <p class="message">{message}</p>
-        <div class="code-box">
-            <div>
-                <span>LINK PATH: </span>
-                <strong>/{short_code}</strong>
-            </div>
-            <div>
-                <span>STATUS: </span>
-                <strong style="color: #B91C1C;">{status_tag}</strong>
-            </div>
+        <div class="footer-note">
+            &copy; 2026 LINKPULSE &bull; TURN EVERY CLICK INTO INTELLIGENCE
         </div>
-        <a href="{frontend_url}" class="btn">GO TO LINKPULSE &rarr;</a>
     </div>
 </body>
 </html>"""
     return HttpResponseNotFound(html_content, content_type="text/html")
 
 
-class RedirectView(APIView):
-    permission_classes = [AllowAny]
-    authentication_classes = []
+class RedirectView(View):
+    """
+    Public URL short code redirect engine.
+    Redirects active links via HTTP 302 or displays a standalone branded error page
+    when links are expired, disabled, or non-existent.
+    """
 
-    @extend_schema(
-        summary="Redirect short code to original URL",
-        responses={302: None, 404: None},
-    )
     def get(self, request, short_code):
         try:
             link = ShortLink.objects.select_related("workspace").get(
                 short_code=short_code
             )
         except ShortLink.DoesNotExist:
-            return render_error_html(
-                request,
-                title="LINK NOT FOUND",
+            return render_error_page(
+                title="Link Not Found",
+                headline="LINK NOT FOUND",
                 message="The short link you are trying to visit does not exist or has been removed.",
                 short_code=short_code,
                 status_tag="NOT FOUND",
@@ -194,20 +258,20 @@ class RedirectView(APIView):
 
         # Check if disabled
         if not link.is_active:
-            return render_error_html(
-                request,
-                title="LINK DISABLED",
-                message="This short link has been disabled by its creator and is not taking traffic.",
+            return render_error_page(
+                title="Link Disabled",
+                headline="LINK IS DISABLED",
+                message="This short link has been disabled by its owner and is not taking traffic.",
                 short_code=short_code,
                 status_tag="DISABLED",
             )
 
         # Check if expired
         if link.is_expired:
-            return render_error_html(
-                request,
-                title="LINK EXPIRED",
-                message="This short link has expired and is no longer active.",
+            return render_error_page(
+                title="Link Expired",
+                headline="LINK HAS EXPIRED",
+                message="This short link has reached its expiration date and is no longer active. You can create a new short link to replace it.",
                 short_code=short_code,
                 status_tag="EXPIRED",
             )
@@ -220,10 +284,10 @@ class RedirectView(APIView):
         metadata["visitor_id"] = visitor_id
         metadata["event_id"] = str(uuid.uuid4())
 
-        # Fast lightweight counter increment (Section 37)
+        # Fast lightweight counter increment
         ShortLink.objects.filter(pk=link.pk).update(click_count=F("click_count") + 1)
 
-        # Queue async click event (Section 20)
+        # Queue async click event
         ClickTrackingService.record_click(link, metadata)
 
         # Redirect immediately with HTTP 302
