@@ -10,6 +10,7 @@ export function Badge({ children, variant = "default", className = "" }) {
     teal: "bg-[#1351AA]/10 text-[#1351AA] border-[#1351AA]/30",
     active: "bg-[#1351AA]/10 text-[#1351AA] border-[#1351AA]/30",
     inactive: "bg-txt-muted/10 text-txt-muted border-border-subtle",
+    expired: "bg-red-700/10 text-red-700 border-red-700/30",
     warning: "bg-amber-500/10 text-amber-700 border-amber-500/30",
     danger: "bg-red-700/10 text-red-700 border-red-700/30",
   };

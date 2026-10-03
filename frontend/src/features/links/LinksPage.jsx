@@ -179,9 +179,12 @@ export function LinksPage() {
                           {formatNumber(link.click_count)}
                         </td>
                         <td className="px-5 py-3.5">
-                          <Badge variant={link.is_active ? "active" : "inactive"}>
-                            {link.is_active ? "ACTIVE" : "DISABLED"}
-                          </Badge>
+                          {(() => {
+                            const isExpired = link.expires_at && new Date(link.expires_at) <= new Date();
+                            const variant = !link.is_active ? "inactive" : isExpired ? "expired" : "active";
+                            const label = !link.is_active ? "DISABLED" : isExpired ? "EXPIRED" : "ACTIVE";
+                            return <Badge variant={variant}>{label}</Badge>;
+                          })()}
                         </td>
                         <td className="px-5 py-3.5 text-txt-muted font-numeric">
                           {formatDate(link.created_at)}
@@ -247,9 +250,12 @@ export function LinksPage() {
                           /{link.short_code}
                         </span>
                       </div>
-                      <Badge variant={link.is_active ? "active" : "inactive"}>
-                        {link.is_active ? "ACTIVE" : "DISABLED"}
-                      </Badge>
+                      {(() => {
+                        const isExpired = link.expires_at && new Date(link.expires_at) <= new Date();
+                        const variant = !link.is_active ? "inactive" : isExpired ? "expired" : "active";
+                        const label = !link.is_active ? "DISABLED" : isExpired ? "EXPIRED" : "ACTIVE";
+                        return <Badge variant={variant}>{label}</Badge>;
+                      })()}
                     </div>
 
                     <p className="text-xs text-txt-secondary font-sans truncate">
