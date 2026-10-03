@@ -103,7 +103,10 @@ export function ClickTimelineChart({ data = [] }) {
     for (let i = daysCount - 1; i >= 0; i--) {
       const d = new Date(endDate);
       d.setDate(d.getDate() - i);
-      const isoDate = d.toISOString().split("T")[0];
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const isoDate = `${year}-${month}-${day}`;
       const displayDate = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
       const existing = map.get(isoDate);
