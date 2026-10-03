@@ -1,34 +1,36 @@
-import React, { lazy, Suspense } from "react";
+import React, { Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./features/auth/ProtectedRoute";
 import { PageSkeleton } from "./components/ui/Skeleton";
+import { RouteErrorElement } from "./components/ui/ErrorBoundary";
+import { lazyWithRetry } from "./utils/lazyWithRetry";
 
-// Lazy load route pages for optimal JS bundle splitting
-const LandingPage = lazy(() =>
+// Lazy load route pages with retry resilience against dynamic import chunk load failures
+const LandingPage = lazyWithRetry(() =>
   import("./features/landing/LandingPage").then((m) => ({ default: m.LandingPage }))
 );
-const LoginPage = lazy(() =>
+const LoginPage = lazyWithRetry(() =>
   import("./features/auth/LoginPage").then((m) => ({ default: m.LoginPage }))
 );
-const RegisterPage = lazy(() =>
+const RegisterPage = lazyWithRetry(() =>
   import("./features/auth/RegisterPage").then((m) => ({ default: m.RegisterPage }))
 );
-const DashboardOverviewPage = lazy(() =>
+const DashboardOverviewPage = lazyWithRetry(() =>
   import("./features/dashboard/DashboardOverviewPage").then((m) => ({ default: m.DashboardOverviewPage }))
 );
-const LinksPage = lazy(() =>
+const LinksPage = lazyWithRetry(() =>
   import("./features/links/LinksPage").then((m) => ({ default: m.LinksPage }))
 );
-const LinkDetailPage = lazy(() =>
+const LinkDetailPage = lazyWithRetry(() =>
   import("./features/links/LinkDetailPage").then((m) => ({ default: m.LinkDetailPage }))
 );
-const CampaignsPage = lazy(() =>
+const CampaignsPage = lazyWithRetry(() =>
   import("./features/campaigns/CampaignsPage").then((m) => ({ default: m.CampaignsPage }))
 );
-const WorkspacesPage = lazy(() =>
+const WorkspacesPage = lazyWithRetry(() =>
   import("./features/workspaces/WorkspacesPage").then((m) => ({ default: m.WorkspacesPage }))
 );
-const SettingsPage = lazy(() =>
+const SettingsPage = lazyWithRetry(() =>
   import("./features/settings/SettingsPage").then((m) => ({ default: m.SettingsPage }))
 );
 
@@ -41,18 +43,22 @@ const withSuspense = (Component) => (
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <RouteErrorElement />,
     element: withSuspense(LandingPage),
   },
   {
     path: "/login",
+    errorElement: <RouteErrorElement />,
     element: withSuspense(LoginPage),
   },
   {
     path: "/register",
+    errorElement: <RouteErrorElement />,
     element: withSuspense(RegisterPage),
   },
   {
     path: "/app",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         <Navigate to="/app/dashboard" replace />
@@ -61,6 +67,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/app/dashboard",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         {withSuspense(DashboardOverviewPage)}
@@ -69,6 +76,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/app/links",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         {withSuspense(LinksPage)}
@@ -77,6 +85,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/app/links/:id",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         {withSuspense(LinkDetailPage)}
@@ -85,6 +94,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/app/campaigns",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         {withSuspense(CampaignsPage)}
@@ -93,6 +103,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/app/workspaces",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         {withSuspense(WorkspacesPage)}
@@ -101,6 +112,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/app/settings",
+    errorElement: <RouteErrorElement />,
     element: (
       <ProtectedRoute>
         {withSuspense(SettingsPage)}
@@ -109,6 +121,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
+    errorElement: <RouteErrorElement />,
     element: <Navigate to="/app/dashboard" replace />,
   },
 ]);

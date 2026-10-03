@@ -59,7 +59,7 @@ export function LoginPage() {
         <div
           role="alert"
           aria-live="polite"
-          className="p-4 border border-[#141414] bg-[#E3E2DE] text-[#141414] text-xs font-mono mb-6 space-y-1"
+          className="p-4 border border-[#141414] bg-[#F8F9FA] text-[#141414] text-xs font-mono mb-6 space-y-1"
         >
           <div className="font-bold uppercase tracking-wider text-red-700 flex items-center justify-between">
             <span>UNABLE TO SIGN IN</span>
@@ -139,12 +139,12 @@ export function LoginPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-[56px] bg-[#1351AA] hover:bg-[#141414] text-[#E3E2DE] font-bold text-sm tracking-[0.08em] uppercase transition-colors duration-300 rounded-none flex items-center justify-center space-x-2 disabled:opacity-60 disabled:cursor-not-allowed group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1351AA] focus:ring-offset-2 focus:ring-offset-[#E3E2DE]"
+          className="w-full h-[56px] bg-[#1351AA] hover:bg-[#141414] text-white font-bold text-sm tracking-[0.08em] uppercase transition-colors duration-300 rounded-none flex items-center justify-center space-x-2 disabled:opacity-60 disabled:cursor-not-allowed group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1351AA] focus:ring-offset-2 focus:ring-offset-white"
         >
           {isLoading ? (
             <span className="inline-flex items-center space-x-2">
               <svg
-                className="animate-spin h-4 w-4 text-[#E3E2DE]"
+                className="animate-spin h-4 w-4 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

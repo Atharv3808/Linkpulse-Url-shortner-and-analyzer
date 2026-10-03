@@ -4,7 +4,7 @@ export function TypographicListItem({ index, title, description, badge, onClick 
   return (
     <div
       onClick={onClick}
-      className="group border-t border-[#C7C7C7] p-6 sm:p-8 xl:p-10 transition-colors duration-300 hover:bg-[#DCDAD4] cursor-pointer select-none flex flex-col md:flex-row md:items-center justify-between gap-4"
+      className="group border-t border-[#C7C7C7] p-6 sm:p-8 xl:p-10 transition-colors duration-300 hover:bg-[#F8F9FA] cursor-pointer select-none flex flex-col md:flex-row md:items-center justify-between gap-4"
     >
       <div className="flex items-start md:items-center space-x-6">
         <span className="font-mono text-xs text-[#7A7A7A] tracking-wider pt-1 md:pt-0 shrink-0">
@@ -24,7 +24,7 @@ export function TypographicListItem({ index, title, description, badge, onClick 
 
       <div className="flex items-center space-x-3 shrink-0 self-end md:self-center">
         {badge && (
-          <span className="text-[10px] font-mono font-bold tracking-widest text-[#7A7A7A] border border-[#C7C7C7] px-2.5 py-1 uppercase bg-[#E3E2DE]">
+          <span className="text-[10px] font-mono font-bold tracking-widest text-[#7A7A7A] border border-[#C7C7C7] px-2.5 py-1 uppercase bg-[#F8F9FA]">
             {badge}
           </span>
         )}

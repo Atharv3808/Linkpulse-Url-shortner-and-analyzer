@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 export function AuthLayout({ children, isRegister = false }) {
   return (
-    <div className="min-h-screen bg-[#E3E2DE] text-[#141414] font-sans flex flex-col selection:bg-[#1351AA] selection:text-[#E3E2DE]">
+    <div className="min-h-screen bg-white text-[#141414] font-sans flex flex-col selection:bg-[#1351AA] selection:text-white">
       {/* Mobile Top Header */}
-      <header className="lg:hidden flex items-center justify-between p-6 border-b border-[#C7C7C7] bg-[#E3E2DE] sticky top-0 z-20">
+      <header className="lg:hidden flex items-center justify-between p-6 border-b border-[#C7C7C7] bg-white sticky top-0 z-20">
         <Link to="/" className="flex items-center space-x-2 group">
           <span className="text-lg font-black tracking-tight text-[#141414] uppercase">
             LINKPULSE
@@ -19,7 +19,7 @@ export function AuthLayout({ children, isRegister = false }) {
       {/* Main Split Grid */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-screen">
         {/* Left Brand Panel (~45% on desktop) */}
-        <aside className="lg:col-span-5 hidden lg:flex flex-col justify-between p-10 xl:p-14 border-r border-[#C7C7C7] bg-[#E3E2DE] select-none">
+        <aside className="lg:col-span-5 hidden lg:flex flex-col justify-between p-10 xl:p-14 border-r border-[#C7C7C7] bg-white select-none">
           {/* Top Brand Tag */}
           <div className="space-y-1.5 animate-fade-in-up">
             <Link to="/" className="inline-block">
@@ -57,7 +57,7 @@ export function AuthLayout({ children, isRegister = false }) {
         </aside>
 
         {/* Right Auth Content Panel (~55% on desktop) */}
-        <main className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-10 xl:p-16 bg-[#E3E2DE] min-h-full">
+        <main className="lg:col-span-7 flex flex-col justify-between p-6 sm:p-10 xl:p-16 bg-white min-h-full">
           {/* Form Container */}
           <div className="my-auto w-full max-w-[440px] mx-auto py-6 sm:py-10 animate-fade-in-up">
             {children}

@@ -271,7 +271,7 @@ export function LinksPage() {
                         <button
                           type="button"
                           onClick={() => navigate(`/app/links/${link.id}`)}
-                          className="px-3 py-1.5 text-[11px] font-bold bg-[#1351AA] text-[#E3E2DE] rounded-none border border-[#1351AA] uppercase"
+                          className="px-3 py-1.5 text-[11px] font-bold bg-[#1351AA] text-white rounded-none border border-[#1351AA] uppercase"
                         >
                           ANALYTICS
                         </button>

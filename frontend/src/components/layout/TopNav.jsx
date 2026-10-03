@@ -120,7 +120,7 @@ export function TopNav({
                 }}
                 className={`w-full flex items-center space-x-2.5 px-2.5 py-2 text-xs font-mono font-bold uppercase rounded-none transition-colors ${
                   theme === "system"
-                    ? "bg-[#1351AA] text-[#E3E2DE]"
+                    ? "bg-[#1351AA] text-white"
                     : "text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated"
                 }`}
               >
@@ -135,7 +135,7 @@ export function TopNav({
                 }}
                 className={`w-full flex items-center space-x-2.5 px-2.5 py-2 text-xs font-mono font-bold uppercase rounded-none transition-colors ${
                   theme === "light"
-                    ? "bg-[#1351AA] text-[#E3E2DE]"
+                    ? "bg-[#1351AA] text-white"
                     : "text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated"
                 }`}
               >
@@ -150,7 +150,7 @@ export function TopNav({
                 }}
                 className={`w-full flex items-center space-x-2.5 px-2.5 py-2 text-xs font-mono font-bold uppercase rounded-none transition-colors ${
                   theme === "dark"
-                    ? "bg-[#1351AA] text-[#E3E2DE]"
+                    ? "bg-[#1351AA] text-white"
                     : "text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated"
                 }`}
               >
@@ -179,7 +179,7 @@ export function TopNav({
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
             className="flex items-center space-x-1 p-0.5 rounded-none border border-border-subtle hover:border-[#141414] transition-all"
           >
-            <div className="w-7 h-7 bg-[#1351AA] text-[#E3E2DE] font-bold text-xs flex items-center justify-center rounded-none">
+            <div className="w-7 h-7 bg-[#1351AA] text-white font-bold text-xs flex items-center justify-center rounded-none">
               {user?.first_name ? user.first_name[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
             </div>
           </button>

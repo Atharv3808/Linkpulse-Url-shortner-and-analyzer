@@ -4,6 +4,7 @@ import { AppProviders } from "./providers";
 import { router } from "./router";
 import { useAuthStore } from "./store/useAuthStore";
 import { authApi } from "./api/auth.api";
+import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 
 export function App() {
   const { isAuthenticated, setUser, logout } = useAuthStore();
@@ -25,9 +26,11 @@ export function App() {
   }, [isAuthenticated, setUser, logout]);
 
   return (
-    <AppProviders>
-      <RouterProvider router={router} />
-    </AppProviders>
+    <ErrorBoundary>
+      <AppProviders>
+        <RouterProvider router={router} />
+      </AppProviders>
+    </ErrorBoundary>
   );
 }
 

@@ -19,7 +19,7 @@ export function LandingNav({ onScrollToSection }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 h-[80px] bg-[#E3E2DE]/95 backdrop-blur-md border-b border-[#C7C7C7] transition-colors select-none">
+    <header className="sticky top-0 z-50 h-[80px] bg-white/95 backdrop-blur-md border-b border-[#C7C7C7] transition-colors select-none">
       <div className="max-w-[1920px] mx-auto h-full grid grid-cols-12 items-center px-6 lg:px-10">
         {/* Columns 1–3: Brand Logo */}
         <div className="col-span-6 lg:col-span-3 flex items-center space-x-3">
@@ -61,7 +61,7 @@ export function LandingNav({ onScrollToSection }) {
           {isAuthenticated ? (
             <Link
               to="/app/dashboard"
-              className="h-[44px] px-5 bg-[#1351AA] hover:bg-[#141414] text-[#E3E2DE] font-bold text-xs tracking-wider uppercase transition-colors duration-300 flex items-center justify-center space-x-1.5"
+              className="h-[44px] px-5 bg-[#1351AA] hover:bg-[#141414] text-white font-bold text-xs tracking-wider uppercase transition-colors duration-300 flex items-center justify-center space-x-1.5"
             >
               <span>WORKSPACE →</span>
             </Link>
@@ -75,7 +75,7 @@ export function LandingNav({ onScrollToSection }) {
               </Link>
               <Link
                 to="/register"
-                className="h-[44px] px-5 bg-[#1351AA] hover:bg-[#141414] text-[#E3E2DE] font-bold text-xs tracking-wider uppercase transition-colors duration-300 flex items-center justify-center space-x-1.5"
+                className="h-[44px] px-5 bg-[#1351AA] hover:bg-[#141414] text-white font-bold text-xs tracking-wider uppercase transition-colors duration-300 flex items-center justify-center space-x-1.5"
               >
                 <span>GET STARTED →</span>
               </Link>
@@ -98,7 +98,7 @@ export function LandingNav({ onScrollToSection }) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-[#C7C7C7] bg-[#E3E2DE] px-6 py-6 space-y-4 animate-fade-in-up">
+        <div className="lg:hidden border-b border-[#C7C7C7] bg-white px-6 py-6 space-y-4 animate-fade-in-up">
           <div className="flex flex-col space-y-3 font-mono text-sm uppercase">
             <button
               onClick={() => handleNavClick("system")}
@@ -124,7 +124,7 @@ export function LandingNav({ onScrollToSection }) {
             {isAuthenticated ? (
               <Link
                 to="/app/dashboard"
-                className="w-full h-[50px] bg-[#1351AA] text-[#E3E2DE] font-bold text-xs tracking-wider uppercase flex items-center justify-center"
+                className="w-full h-[50px] bg-[#1351AA] text-white font-bold text-xs tracking-wider uppercase flex items-center justify-center"
               >
                 GO TO WORKSPACE →
               </Link>
@@ -132,7 +132,7 @@ export function LandingNav({ onScrollToSection }) {
               <>
                 <Link
                   to="/register"
-                  className="w-full h-[50px] bg-[#1351AA] text-[#E3E2DE] font-bold text-xs tracking-wider uppercase flex items-center justify-center"
+                  className="w-full h-[50px] bg-[#1351AA] text-white font-bold text-xs tracking-wider uppercase flex items-center justify-center"
                 >
                   START WITH LINKPULSE →
                 </Link>

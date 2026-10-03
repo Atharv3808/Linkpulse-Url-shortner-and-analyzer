@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function LandingFooter() {
   return (
-    <footer className="border-t border-[#C7C7C7] bg-[#E3E2DE] text-[#141414] select-none">
+    <footer className="border-t border-[#C7C7C7] bg-white text-[#141414] select-none">
       <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-12">
         {/* Brand Column (Col 1-4) */}
         <div className="lg:col-span-4 p-8 xl:p-12 border-b lg:border-b-0 lg:border-r border-[#C7C7C7] space-y-4">

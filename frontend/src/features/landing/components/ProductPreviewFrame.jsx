@@ -2,7 +2,7 @@ import React from "react";
 
 export function ProductPreviewFrame() {
   return (
-    <div className="w-full border border-[#C7C7C7] bg-[#E3E2DE] font-sans text-[#141414] select-none my-8">
+    <div className="w-full border border-[#C7C7C7] bg-white font-sans text-[#141414] select-none my-8">
       {/* Header Bar */}
       <div className="border-b border-[#C7C7C7] p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
         <div className="flex items-center space-x-3">
@@ -16,7 +16,7 @@ export function ProductPreviewFrame() {
           </span>
         </div>
         <div className="flex items-center space-x-3">
-          <span className="px-2.5 py-1 bg-[#141414] text-[#E3E2DE] font-bold text-[10px] tracking-widest uppercase">
+          <span className="px-2.5 py-1 bg-[#141414] text-white font-bold text-[10px] tracking-widest uppercase">
             30 DAYS
           </span>
           <span className="text-[10px] font-bold text-[#1351AA] border border-[#1351AA] px-2 py-0.5 uppercase">
@@ -65,7 +65,7 @@ export function ProductPreviewFrame() {
       </div>
 
       {/* Editorial Timeline Chart SVG */}
-      <div className="p-6 sm:p-8 border-b border-[#C7C7C7] bg-[#E3E2DE]">
+      <div className="p-6 sm:p-8 border-b border-[#C7C7C7] bg-white">
         <div className="flex items-center justify-between text-xs font-mono mb-4 text-[#7A7A7A]">
           <span>CLICK TIMELINE breakdown (OCT 2026)</span>
           <span className="text-[#1351AA] font-bold">PEAK: 1,480 CLICKS / DAY</span>
@@ -92,13 +92,13 @@ export function ProductPreviewFrame() {
             />
 
             {/* Peak Dot Markers */}
-            <circle cx="200" cy="80" r="5" fill="#1351AA" stroke="#E3E2DE" strokeWidth="2" />
-            <circle cx="600" cy="30" r="6" fill="#1351AA" stroke="#E3E2DE" strokeWidth="2" />
+            <circle cx="200" cy="80" r="5" fill="#1351AA" stroke="#FFFFFF" strokeWidth="2" />
+            <circle cx="600" cy="30" r="6" fill="#1351AA" stroke="#FFFFFF" strokeWidth="2" />
 
             {/* Peak Callout Label */}
             <g transform="translate(560, 2)">
               <rect x="0" y="0" width="80" height="20" fill="#1351AA" />
-              <text x="40" y="14" fill="#E3E2DE" fontSize="10" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
+              <text x="40" y="14" fill="#FFFFFF" fontSize="10" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
                 1,480 CLICKS
               </text>
             </g>
@@ -124,15 +124,15 @@ export function ProductPreviewFrame() {
           </div>
 
           <div className="space-y-3 font-mono text-xs">
-            <div className="flex items-center justify-between p-2.5 border border-[#C7C7C7] bg-[#E3E2DE]">
+            <div className="flex items-center justify-between p-2.5 border border-[#C7C7C7] bg-[#F8F9FA]">
               <span className="font-bold text-[#1351AA]">/launch2026</span>
               <span className="font-bold font-numeric text-[#141414]">8,421</span>
             </div>
-            <div className="flex items-center justify-between p-2.5 border border-[#C7C7C7] bg-[#E3E2DE]">
+            <div className="flex items-center justify-between p-2.5 border border-[#C7C7C7] bg-[#F8F9FA]">
               <span className="font-bold text-[#141414]">/portfolio</span>
               <span className="font-bold font-numeric text-[#141414]">5,210</span>
             </div>
-            <div className="flex items-center justify-between p-2.5 border border-[#C7C7C7] bg-[#E3E2DE]">
+            <div className="flex items-center justify-between p-2.5 border border-[#C7C7C7] bg-[#F8F9FA]">
               <span className="font-bold text-[#141414]">/newsletter-oct</span>
               <span className="font-bold font-numeric text-[#141414]">3,890</span>
             </div>

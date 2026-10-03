@@ -18,11 +18,11 @@ export function Button({
 
   const variants = {
     primary:
-      "bg-[#1351AA] text-[#E3E2DE] hover:bg-[#141414] active:bg-[#141414]",
+      "bg-[#1351AA] text-white hover:bg-[#141414] active:bg-[#141414]",
     secondary:
-      "bg-[#141414] text-[#E3E2DE] hover:bg-[#1351AA] border border-[#141414]",
+      "bg-[#141414] text-white hover:bg-[#1351AA] border border-[#141414]",
     outline:
-      "bg-transparent text-txt-primary border border-border-subtle hover:border-[#141414] hover:bg-[#141414] hover:text-[#E3E2DE]",
+      "bg-transparent text-txt-primary border border-border-subtle hover:border-[#141414] hover:bg-[#141414] hover:text-white",
     ghost:
       "bg-transparent text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated font-mono",
     danger:
@@ -78,8 +78,8 @@ export function IconButton({
 
   const variants = {
     ghost: "bg-transparent hover:bg-bg-elevated",
-    outline: "bg-transparent border border-border-subtle hover:bg-[#141414] hover:text-[#E3E2DE]",
-    secondary: "bg-bg-secondary border border-border-subtle hover:bg-[#141414] hover:text-[#E3E2DE]",
+    outline: "bg-transparent border border-border-subtle hover:bg-[#141414] hover:text-white",
+    secondary: "bg-bg-secondary border border-border-subtle hover:bg-[#141414] hover:text-white",
   };
 
   const sizes = {

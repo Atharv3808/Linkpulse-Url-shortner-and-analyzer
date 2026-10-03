@@ -168,7 +168,7 @@ export function Sidebar({ isOpen, onClose }) {
             }`}
           >
             <div className="flex items-center space-x-2.5 min-w-0">
-              <div className="w-7 h-7 rounded-none bg-[#1351AA] text-[#E3E2DE] font-bold text-xs flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-none bg-[#1351AA] text-white font-bold text-xs flex items-center justify-center shrink-0">
                 {user?.first_name ? user.first_name[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
               </div>
               {!sidebarCollapsed && (

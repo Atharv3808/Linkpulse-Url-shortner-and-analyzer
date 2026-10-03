@@ -6,15 +6,15 @@
 
 @layer base {
   :root, html.light {
-    /* Poster Modernist Light Palette (Default) */
-    --bg-dark: #E3E2DE;
-    --bg-sidebar: #E3E2DE;
-    --bg-surface: #E3E2DE;
-    --bg-secondary: #DCDAD4;
-    --bg-elevated: #DCDAD4;
-    --bg-card: #E3E2DE;
+    /* Clean White Modernist Palette */
+    --bg-dark: #FFFFFF;
+    --bg-sidebar: #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-secondary: #F8F9FA;
+    --bg-elevated: #F8F9FA;
+    --bg-card: #FFFFFF;
 
-    --border-subtle: #C7C7C7;
+    --border-subtle: #E2E8F0;
     --border-hover: #141414;
 
     --txt-primary: #141414;
@@ -41,12 +41,12 @@
     --border-subtle: #333333;
     --border-hover: #C7C7C7;
 
-    --txt-primary: #E3E2DE;
+    --txt-primary: #FFFFFF;
     --txt-secondary: #A0A0A0;
     --txt-muted: #7A7A7A;
 
     --accent-purple: #4A82D1;
-    --accent-purple-hover: #E3E2DE;
+    --accent-purple-hover: #FFFFFF;
     --accent-teal: #4A82D1;
     --accent-green: #4A82D1;
     --accent-yellow: #F59E0B;

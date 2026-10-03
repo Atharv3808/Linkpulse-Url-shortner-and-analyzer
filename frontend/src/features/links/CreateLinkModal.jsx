@@ -67,7 +67,7 @@ export function CreateLinkModal({ isOpen, onClose }) {
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {errorMsg && (
-          <div className="p-4 border border-[#141414] bg-[#E3E2DE] text-[#141414] text-xs font-mono space-y-1">
+          <div className="p-4 border border-[#141414] bg-[#F8F9FA] text-[#141414] text-xs font-mono space-y-1">
             <div className="font-bold uppercase tracking-wider text-red-700 flex items-center justify-between">
               <span>UNABLE TO CREATE LINK</span>
               <span>[ERROR]</span>

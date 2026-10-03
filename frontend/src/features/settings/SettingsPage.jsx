@@ -155,7 +155,7 @@ export function SettingsPage() {
                         {theme === "light" && <Check className="w-4 h-4 text-accent-purple" />}
                       </div>
                       <p className="text-[11px] text-txt-secondary leading-relaxed font-mono">
-                        Poster Modernist cream palette `#E3E2DE` with high contrast black borders.
+                        Clean high-contrast white palette `#FFFFFF` with high contrast black borders.
                       </p>
                     </div>
 
