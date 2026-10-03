@@ -4,7 +4,7 @@ export function Card({ children, className = "", onClick, ...props }) {
   return (
     <div
       onClick={onClick}
-      className={`bg-bg-card border border-border-subtle rounded-xl p-4.5 transition-all duration-150 ${
+      className={`bg-bg-card border border-border-subtle rounded-xl p-5 overflow-hidden transition-all duration-150 ${
         onClick ? "cursor-pointer hover:border-border-hover" : ""
       } ${className}`}
       {...props}

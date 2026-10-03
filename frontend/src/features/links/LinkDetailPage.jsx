@@ -195,52 +195,60 @@ export function LinkDetailPage() {
 
         {/* Summary Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
+          <Card className="flex flex-col justify-between min-h-[100px]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-txt-secondary">
+              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
                 Total clicks
               </span>
-              <MousePointerClick className="w-4 h-4 text-txt-muted" />
+              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
+                <MousePointerClick className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
+            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.total_clicks ?? 0)}
-            </p>
+            </div>
           </Card>
 
-          <Card>
+          <Card className="flex flex-col justify-between min-h-[100px]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-txt-secondary">
+              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
                 Unique visitors
               </span>
-              <Users className="w-4 h-4 text-txt-muted" />
+              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
+                <Users className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
+            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.unique_visitors ?? 0)}
-            </p>
+            </div>
           </Card>
 
-          <Card>
+          <Card className="flex flex-col justify-between min-h-[100px]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-txt-secondary">
+              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
                 Human traffic
               </span>
-              <UserCheck className="w-4 h-4 text-txt-muted" />
+              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
+                <UserCheck className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
+            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.human_clicks ?? 0)}
-            </p>
+            </div>
           </Card>
 
-          <Card>
+          <Card className="flex flex-col justify-between min-h-[100px]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-txt-secondary">
+              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
                 Bot / Crawlers
               </span>
-              <Bot className="w-4 h-4 text-txt-muted" />
+              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
+                <Bot className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2.5xl font-bold text-txt-primary mt-2 font-numeric">
+            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.bot_clicks ?? 0)}
-            </p>
+            </div>
           </Card>
         </div>
 

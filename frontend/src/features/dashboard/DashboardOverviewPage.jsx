@@ -83,24 +83,14 @@ export function DashboardOverviewPage() {
   return (
     <ApplicationShell title="Overview">
       <div className="space-y-6">
-        {/* Header with Title, Concise Description, and Action */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-5">
-          <div>
-            <h2 className="text-xl font-bold text-txt-primary tracking-tight">
-              Overview
-            </h2>
-            <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
-              Track your links, understand your audience, and measure what is working across your active workspace.
-            </p>
-          </div>
-
-          <div className="flex items-center space-x-2 shrink-0">
-            <Link to="/app/links">
-              <Button variant="primary" size="sm" icon={Plus}>
-                Create link
-              </Button>
-            </Link>
-          </div>
+        {/* Header with Title and Concise Description */}
+        <div className="border-b border-border-subtle pb-5">
+          <h2 className="text-xl font-bold text-txt-primary tracking-tight">
+            Overview
+          </h2>
+          <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
+            Track your links, understand your audience, and measure what is working across your active workspace.
+          </p>
         </div>
 
         {/* 4 Primary KPI Metric Cards */}
@@ -110,20 +100,25 @@ export function DashboardOverviewPage() {
             : kpis.map((kpi, idx) => {
                 const Icon = kpi.icon;
                 return (
-                  <Card key={idx} className="relative flex flex-col justify-between hover:border-border-hover transition-colors">
+                  <Card
+                    key={idx}
+                    className="relative hover:border-border-hover transition-colors flex flex-col justify-between min-h-[110px]"
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-txt-secondary">
+                      <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
                         {kpi.title}
                       </span>
-                      <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-md text-txt-muted">
+                      <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
                         <Icon className="w-3.5 h-3.5" />
                       </div>
                     </div>
                     <div className="mt-3">
-                      <span className="text-2.5xl font-bold text-txt-primary font-numeric tracking-tight">
+                      <div className="text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
                         {formatNumber(kpi.value)}
-                      </span>
-                      <p className="text-[11px] text-txt-muted mt-1">{kpi.subtitle}</p>
+                      </div>
+                      <p className="text-xs text-txt-muted mt-2 leading-tight">
+                        {kpi.subtitle}
+                      </p>
                     </div>
                   </Card>
                 );
