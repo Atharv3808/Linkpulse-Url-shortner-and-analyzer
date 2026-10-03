@@ -13,8 +13,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import {
-  MousePointerClick,
-  Users,
   TrendingUp,
   BarChart2,
   LineChart as LineIcon,
@@ -23,7 +21,7 @@ import {
 } from "lucide-react";
 import { formatNumber } from "../../lib/formatters";
 
-// Premium Glassmorphic Tooltip
+// Custom Theme-Aware Tooltip Component
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const total = payload.find((p) => p.dataKey === "clicks")?.value || 0;
@@ -31,10 +29,10 @@ const CustomTooltip = ({ active, payload, label }) => {
     const ratio = total > 0 ? Math.round((unique / total) * 100) : 0;
 
     return (
-      <div className="bg-[#0E1017]/95 backdrop-blur-md border border-white/10 p-3.5 rounded-xl shadow-2xl text-xs space-y-2.5 min-w-[200px]">
-        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+      <div className="bg-bg-elevated/95 backdrop-blur-md border border-border-subtle p-3.5 rounded-xl shadow-popover text-xs space-y-2.5 min-w-[200px]">
+        <div className="flex items-center justify-between border-b border-border-subtle pb-2">
           <span className="font-semibold text-txt-primary">{label}</span>
-          <span className="text-[10px] bg-white/5 text-txt-muted px-2 py-0.5 rounded-full border border-white/5">
+          <span className="text-[10px] bg-bg-surface text-txt-muted px-2 py-0.5 rounded-full border border-border-subtle font-numeric">
             {ratio}% unique
           </span>
         </div>
@@ -67,37 +65,58 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export function ClickTimelineChart({ data = [] }) {
   const [chartType, setChartType] = useState("area"); // 'area' | 'bar' | 'line'
+  const [timeframe, setTimeframe] = useState("7d"); // '7d' | '14d' | '30d'
   const [activeSeries, setActiveSeries] = useState({ clicks: true, unique: true });
 
+  // Transform & pad timeline data to form a continuous date range curve
   const chartData = useMemo(() => {
     if (!Array.isArray(data)) return [];
-    return data.map((item) => {
-      const rawDate = item.date || item.timestamp;
-      let displayDate = rawDate;
-      if (rawDate) {
-        if (rawDate.includes("T")) {
-          try {
-            const d = new Date(rawDate);
-            displayDate = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-          } catch (e) {
-            displayDate = rawDate;
-          }
-        } else {
-          const parts = rawDate.split("-");
-          if (parts.length === 3) {
-            const d = new Date(parts[0], parts[1] - 1, parts[2]);
-            displayDate = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-          }
+
+    const daysCount = timeframe === "7d" ? 7 : timeframe === "14d" ? 14 : 30;
+
+    // Create lookup map of existing date entries
+    const map = new Map();
+    data.forEach((item) => {
+      const key = item.date || item.timestamp;
+      if (key) {
+        // Strip ISO time if present
+        const dateKey = key.includes("T") ? key.split("T")[0] : key;
+        map.set(dateKey, item);
+      }
+    });
+
+    // Reference end date: use latest in data or today
+    let endDate = new Date();
+    if (data.length > 0) {
+      const lastItem = data[data.length - 1];
+      const dStr = lastItem.date || lastItem.timestamp;
+      if (dStr) {
+        const cleanStr = dStr.includes("T") ? dStr.split("T")[0] : dStr;
+        const parts = cleanStr.split("-");
+        if (parts.length === 3) {
+          endDate = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
         }
       }
-      return {
-        ...item,
-        displayDate: displayDate || "",
-        clicks: item.clicks || 0,
-        unique_visitors: item.unique_visitors || 0,
-      };
-    });
-  }, [data]);
+    }
+
+    const padded = [];
+    for (let i = daysCount - 1; i >= 0; i--) {
+      const d = new Date(endDate);
+      d.setDate(d.getDate() - i);
+      const isoDate = d.toISOString().split("T")[0];
+      const displayDate = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+      const existing = map.get(isoDate);
+      padded.push({
+        date: isoDate,
+        displayDate,
+        clicks: existing ? existing.clicks || 0 : 0,
+        unique_visitors: existing ? existing.unique_visitors || 0 : 0,
+      });
+    }
+
+    return padded;
+  }, [data, timeframe]);
 
   // Compute peak activity day
   const peakDay = useMemo(() => {
@@ -105,7 +124,7 @@ export function ClickTimelineChart({ data = [] }) {
     return chartData.reduce((prev, current) => (prev.clicks > current.clicks ? prev : current), chartData[0]);
   }, [chartData]);
 
-  // Compute total clicks in dataset
+  // Compute total clicks in selected dataset timeframe
   const totals = useMemo(() => {
     return chartData.reduce(
       (acc, item) => ({
@@ -116,7 +135,7 @@ export function ClickTimelineChart({ data = [] }) {
     );
   }, [chartData]);
 
-  if (!chartData || chartData.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="h-64 flex flex-col items-center justify-center space-y-3 text-center border border-dashed border-border-subtle/80 rounded-xl bg-bg-elevated/20 p-6">
         <div className="w-12 h-12 rounded-full bg-accent-purple/10 flex items-center justify-center text-accent-purple">
@@ -135,7 +154,6 @@ export function ClickTimelineChart({ data = [] }) {
   const toggleSeries = (key) => {
     setActiveSeries((prev) => {
       const next = { ...prev, [key]: !prev[key] };
-      // Prevent unselecting both
       if (!next.clicks && !next.unique) return prev;
       return next;
     });
@@ -143,49 +161,72 @@ export function ClickTimelineChart({ data = [] }) {
 
   return (
     <div className="space-y-4">
-      {/* Header Controls & Summary Stats Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-bg-elevated/40 border border-border-subtle rounded-xl">
-        {/* Series Toggles */}
-        <div className="flex items-center space-x-2">
-          <button
-            type="button"
-            onClick={() => toggleSeries("clicks")}
-            className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              activeSeries.clicks
-                ? "bg-accent-purple/15 text-accent-purple border border-accent-purple/30 shadow-sm"
-                : "bg-bg-elevated text-txt-muted border border-transparent hover:text-txt-secondary"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-accent-purple" />
-            <span>Total Clicks</span>
-            <span className="font-semibold font-numeric">({formatNumber(totals.clicks)})</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => toggleSeries("unique")}
-            className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              activeSeries.unique
-                ? "bg-accent-teal/15 text-accent-teal border border-accent-teal/30 shadow-sm"
-                : "bg-bg-elevated text-txt-muted border border-transparent hover:text-txt-secondary"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-accent-teal" />
-            <span>Unique Visitors</span>
-            <span className="font-semibold font-numeric">({formatNumber(totals.unique)})</span>
-          </button>
-        </div>
-
-        {/* Peak Badge & Chart View Toggle */}
-        <div className="flex items-center justify-between sm:justify-end space-x-3">
+      {/* Header Controls Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-bg-elevated/40 border border-border-subtle rounded-xl">
+        {/* Metric Overview Callout */}
+        <div className="flex items-baseline space-x-3">
+          <div>
+            <span className="text-3xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
+              {formatNumber(totals.clicks)}
+            </span>
+            <span className="text-xs text-txt-muted ml-2 font-medium">Total clicks ({timeframe})</span>
+          </div>
           {peakDay && peakDay.clicks > 0 && (
-            <div className="hidden md:flex items-center space-x-1.5 text-[11px] text-txt-secondary bg-white/5 border border-white/5 px-2.5 py-1 rounded-lg">
-              <TrendingUp className="w-3.5 h-3.5 text-accent-green" />
-              <span>Peak:</span>
-              <strong className="text-txt-primary font-numeric">{formatNumber(peakDay.clicks)}</strong>
-              <span>on {peakDay.displayDate}</span>
+            <div className="inline-flex items-center space-x-1.5 text-xs text-accent-teal bg-accent-teal/10 border border-accent-teal/20 px-2.5 py-1 rounded-full">
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>Peak: <strong>{formatNumber(peakDay.clicks)}</strong> on {peakDay.displayDate}</span>
             </div>
           )}
+        </div>
+
+        {/* Range Selector & Series Toggles & View Controls */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Timeframe Selector */}
+          <div className="flex items-center bg-bg-surface border border-border-subtle p-0.5 rounded-lg">
+            {["7d", "14d", "30d"].map((rangeKey) => (
+              <button
+                key={rangeKey}
+                type="button"
+                onClick={() => setTimeframe(rangeKey)}
+                className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase transition-all ${
+                  timeframe === rangeKey
+                    ? "bg-accent-purple text-white shadow-xs"
+                    : "text-txt-muted hover:text-txt-secondary"
+                }`}
+              >
+                {rangeKey}
+              </button>
+            ))}
+          </div>
+
+          {/* Series Legend Toggles */}
+          <div className="flex items-center space-x-1.5">
+            <button
+              type="button"
+              onClick={() => toggleSeries("clicks")}
+              className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                activeSeries.clicks
+                  ? "bg-accent-purple/15 text-accent-purple border border-accent-purple/30"
+                  : "bg-bg-elevated text-txt-muted border border-transparent hover:text-txt-secondary"
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-accent-purple" />
+              <span>Clicks</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => toggleSeries("unique")}
+              className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                activeSeries.unique
+                  ? "bg-accent-teal/15 text-accent-teal border border-accent-teal/30"
+                  : "bg-bg-elevated text-txt-muted border border-transparent hover:text-txt-secondary"
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-accent-teal" />
+              <span>Visitors</span>
+            </button>
+          </div>
 
           {/* Chart Type Selector */}
           <div className="flex items-center bg-bg-surface border border-border-subtle p-0.5 rounded-lg">
@@ -234,37 +275,37 @@ export function ClickTimelineChart({ data = [] }) {
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "bar" ? (
             <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
-              <XAxis dataKey="displayDate" stroke="#5A6578" fontSize={11} tickLine={false} axisLine={false} />
-              <YAxis stroke="#5A6578" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
-              <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-              {activeSeries.clicks && <Bar dataKey="clicks" fill="#6366F1" radius={[4, 4, 0, 0]} maxBarSize={32} />}
-              {activeSeries.unique && <Bar dataKey="unique_visitors" fill="#10B981" radius={[4, 4, 0, 0]} maxBarSize={32} />}
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" vertical={false} />
+              <XAxis dataKey="displayDate" stroke="var(--txt-muted)" fontSize={11} tickLine={false} axisLine={false} />
+              <YAxis stroke="var(--txt-muted)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(128,128,128,0.06)" }} />
+              {activeSeries.clicks && <Bar dataKey="clicks" fill="var(--accent-purple)" radius={[4, 4, 0, 0]} maxBarSize={32} />}
+              {activeSeries.unique && <Bar dataKey="unique_visitors" fill="var(--accent-teal)" radius={[4, 4, 0, 0]} maxBarSize={32} />}
             </BarChart>
           ) : chartType === "line" ? (
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
-              <XAxis dataKey="displayDate" stroke="#5A6578" fontSize={11} tickLine={false} axisLine={false} />
-              <YAxis stroke="#5A6578" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" vertical={false} />
+              <XAxis dataKey="displayDate" stroke="var(--txt-muted)" fontSize={11} tickLine={false} axisLine={false} />
+              <YAxis stroke="var(--txt-muted)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
               <Tooltip content={<CustomTooltip />} />
               {activeSeries.clicks && (
                 <Line
                   type="monotone"
                   dataKey="clicks"
-                  stroke="#6366F1"
+                  stroke="var(--accent-purple)"
                   strokeWidth={2.5}
-                  dot={{ r: 3, fill: "#6366F1", strokeWidth: 0 }}
-                  activeDot={{ r: 6, fill: "#6366F1", stroke: "#ffffff", strokeWidth: 2 }}
+                  dot={{ r: 3, fill: "var(--accent-purple)", strokeWidth: 0 }}
+                  activeDot={{ r: 6, fill: "var(--accent-purple)", stroke: "var(--bg-surface)", strokeWidth: 2 }}
                 />
               )}
               {activeSeries.unique && (
                 <Line
                   type="monotone"
                   dataKey="unique_visitors"
-                  stroke="#10B981"
+                  stroke="var(--accent-teal)"
                   strokeWidth={2.5}
-                  dot={{ r: 3, fill: "#10B981", strokeWidth: 0 }}
-                  activeDot={{ r: 6, fill: "#10B981", stroke: "#ffffff", strokeWidth: 2 }}
+                  dot={{ r: 3, fill: "var(--accent-teal)", strokeWidth: 0 }}
+                  activeDot={{ r: 6, fill: "var(--accent-teal)", stroke: "var(--bg-surface)", strokeWidth: 2 }}
                 />
               )}
             </LineChart>
@@ -272,38 +313,38 @@ export function ClickTimelineChart({ data = [] }) {
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366F1" stopOpacity={0.35} />
-                  <stop offset="95%" stopColor="#6366F1" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="var(--accent-purple)" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="var(--accent-purple)" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="tealGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="var(--accent-teal)" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="var(--accent-teal)" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
-              <XAxis dataKey="displayDate" stroke="#5A6578" fontSize={11} tickLine={false} axisLine={false} />
-              <YAxis stroke="#5A6578" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" vertical={false} />
+              <XAxis dataKey="displayDate" stroke="var(--txt-muted)" fontSize={11} tickLine={false} axisLine={false} />
+              <YAxis stroke="var(--txt-muted)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
               <Tooltip content={<CustomTooltip />} />
               {activeSeries.clicks && (
                 <Area
                   type="monotone"
                   dataKey="clicks"
-                  stroke="#6366F1"
+                  stroke="var(--accent-purple)"
                   strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#purpleGradient)"
-                  activeDot={{ r: 6, fill: "#6366F1", stroke: "#ffffff", strokeWidth: 2 }}
+                  activeDot={{ r: 6, fill: "var(--accent-purple)", stroke: "var(--bg-surface)", strokeWidth: 2 }}
                 />
               )}
               {activeSeries.unique && (
                 <Area
                   type="monotone"
                   dataKey="unique_visitors"
-                  stroke="#10B981"
+                  stroke="var(--accent-teal)"
                   strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#tealGradient)"
-                  activeDot={{ r: 6, fill: "#10B981", stroke: "#ffffff", strokeWidth: 2 }}
+                  activeDot={{ r: 6, fill: "var(--accent-teal)", stroke: "var(--bg-surface)", strokeWidth: 2 }}
                 />
               )}
             </AreaChart>
