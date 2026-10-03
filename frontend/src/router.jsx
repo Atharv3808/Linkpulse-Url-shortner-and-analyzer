@@ -4,6 +4,9 @@ import { ProtectedRoute } from "./features/auth/ProtectedRoute";
 import { PageSkeleton } from "./components/ui/Skeleton";
 
 // Lazy load route pages for optimal JS bundle splitting
+const LandingPage = lazy(() =>
+  import("./features/landing/LandingPage").then((m) => ({ default: m.LandingPage }))
+);
 const LoginPage = lazy(() =>
   import("./features/auth/LoginPage").then((m) => ({ default: m.LoginPage }))
 );
@@ -38,7 +41,7 @@ const withSuspense = (Component) => (
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/app/dashboard" replace />,
+    element: withSuspense(LandingPage),
   },
   {
     path: "/login",
