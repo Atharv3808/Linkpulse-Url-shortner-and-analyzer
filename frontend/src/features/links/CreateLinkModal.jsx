@@ -62,19 +62,22 @@ export function CreateLinkModal({ isOpen, onClose }) {
     <Drawer
       isOpen={isOpen}
       onClose={onClose}
-      title="Create short link"
+      title="CREATE SHORT LINK"
       description="Shorten long URLs, track clicks, and customize destination behavior."
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {errorMsg && (
-          <div className="p-3 bg-accent-red/10 border border-accent-red/20 rounded-lg flex items-center space-x-2 text-xs text-accent-red font-medium">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{errorMsg}</span>
+          <div className="p-4 border border-[#141414] bg-[#E3E2DE] text-[#141414] text-xs font-mono space-y-1">
+            <div className="font-bold uppercase tracking-wider text-red-700 flex items-center justify-between">
+              <span>UNABLE TO CREATE LINK</span>
+              <span>[ERROR]</span>
+            </div>
+            <p className="text-[#444343] font-sans text-xs">{errorMsg}</p>
           </div>
         )}
 
         <Input
-          label="Destination URL *"
+          label="DESTINATION URL *"
           type="url"
           placeholder="https://example.com/long-campaign-url"
           value={originalUrl}
@@ -85,7 +88,7 @@ export function CreateLinkModal({ isOpen, onClose }) {
         />
 
         <Input
-          label="Title (Optional)"
+          label="TITLE (OPTIONAL)"
           placeholder="e.g. Q4 Marketing Campaign"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -94,7 +97,7 @@ export function CreateLinkModal({ isOpen, onClose }) {
         />
 
         <Input
-          label="Custom alias (Optional)"
+          label="CUSTOM ALIAS (OPTIONAL)"
           placeholder="e.g. launch2026"
           value={customAlias}
           onChange={(e) => setCustomAlias(e.target.value)}
@@ -103,7 +106,7 @@ export function CreateLinkModal({ isOpen, onClose }) {
         />
 
         <Input
-          label="Expiration date (Optional)"
+          label="EXPIRATION DATE (OPTIONAL)"
           type="datetime-local"
           value={expiresAt}
           onChange={(e) => setExpiresAt(e.target.value)}
@@ -113,10 +116,10 @@ export function CreateLinkModal({ isOpen, onClose }) {
 
         <div className="flex items-center justify-end space-x-3 pt-6 border-t border-border-subtle mt-8">
           <Button type="button" variant="outline" size="sm" onClick={onClose}>
-            Cancel
+            CANCEL
           </Button>
           <Button type="submit" size="sm" isLoading={createMutation.isPending}>
-            Create link
+            CREATE LINK
           </Button>
         </div>
       </form>

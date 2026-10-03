@@ -8,7 +8,6 @@ import {
   Laptop,
   User,
   LogOut,
-  ChevronDown,
 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useThemeStore } from "../../store/useThemeStore";
@@ -51,22 +50,22 @@ export function TopNav({
   const ThemeIcon = getThemeIcon();
 
   return (
-    <header className="h-14 bg-bg-sidebar/90 backdrop-blur-md border-b border-border-subtle sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between transition-colors duration-150">
+    <header className="h-16 bg-bg-sidebar/95 backdrop-blur-md border-b border-border-subtle sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between transition-colors duration-150 rounded-none select-none">
       {/* Left: Mobile menu & Breadcrumb title */}
       <div className="flex items-center space-x-3 min-w-0">
         <button
           type="button"
           onClick={onOpenMobileSidebar}
-          className="p-1.5 text-txt-secondary hover:text-txt-primary lg:hidden rounded-md hover:bg-bg-elevated transition-colors"
+          className="p-1.5 text-txt-secondary hover:text-txt-primary lg:hidden rounded-none hover:bg-bg-elevated transition-colors"
           aria-label="Open navigation menu"
         >
-          <Menu className="w-4 h-4" />
+          <Menu className="w-5 h-5" />
         </button>
         <div className="flex items-center space-x-2 truncate">
-          <span className="text-xs font-semibold text-txt-muted hidden sm:inline">
-            LinkPulse /
+          <span className="text-xs font-mono font-bold text-txt-muted uppercase hidden sm:inline">
+            LINKPULSE /
           </span>
-          <h1 className="text-xs sm:text-sm font-semibold text-txt-primary tracking-tight truncate">
+          <h1 className="text-xs sm:text-sm font-black text-txt-primary uppercase tracking-tight truncate">
             {title || "Overview"}
           </h1>
         </div>
@@ -78,11 +77,11 @@ export function TopNav({
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="hidden sm:inline-flex items-center space-x-2 bg-bg-secondary hover:bg-bg-elevated border border-border-subtle hover:border-border-hover text-txt-muted hover:text-txt-secondary text-xs px-3 py-1.5 rounded-lg transition-all"
+          className="hidden sm:inline-flex items-center space-x-2 bg-bg-secondary hover:bg-bg-elevated border border-border-subtle hover:border-[#141414] text-txt-muted hover:text-txt-primary text-xs px-3 py-2 rounded-none transition-colors"
         >
           <Search className="w-3.5 h-3.5" />
-          <span>Search...</span>
-          <kbd className="font-mono text-[10px] bg-bg-dark border border-border-subtle text-txt-muted px-1.5 py-0.2 rounded">
+          <span className="font-mono uppercase font-bold text-[11px]">SEARCH...</span>
+          <kbd className="font-mono text-[10px] bg-bg-dark border border-border-subtle text-txt-muted px-1.5 py-0.5 rounded-none">
             ⌘K
           </kbd>
         </button>
@@ -91,7 +90,7 @@ export function TopNav({
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="sm:hidden p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-lg transition-colors"
+          className="sm:hidden p-2 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-border-subtle"
           title="Search (⌘K)"
         >
           <Search className="w-4 h-4" />
@@ -103,15 +102,15 @@ export function TopNav({
             type="button"
             onClick={() => setIsThemeOpen(!isThemeOpen)}
             title="Appearance Settings"
-            className="p-1.5 text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated rounded-lg transition-colors border border-border-subtle"
+            className="p-2 text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-border-subtle"
           >
             <ThemeIcon className="w-4 h-4" />
           </button>
 
           {isThemeOpen && (
-            <div className="absolute right-0 mt-2 w-36 bg-bg-surface border border-border-subtle rounded-xl shadow-popover p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
-              <div className="text-[10px] font-semibold text-txt-muted uppercase px-2 py-1 select-none">
-                Appearance
+            <div className="absolute right-0 mt-2 w-40 bg-bg-surface border border-border-subtle rounded-none shadow-none p-1.5 z-50 animate-fade-in-up">
+              <div className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-wider px-2.5 py-1.5 select-none border-b border-border-subtle/50 mb-1">
+                APPEARANCE
               </div>
               <button
                 type="button"
@@ -119,14 +118,14 @@ export function TopNav({
                   setTheme("system");
                   setIsThemeOpen(false);
                 }}
-                className={`w-full flex items-center space-x-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                className={`w-full flex items-center space-x-2.5 px-2.5 py-2 text-xs font-mono font-bold uppercase rounded-none transition-colors ${
                   theme === "system"
-                    ? "bg-accent-purple/15 text-accent-purple font-semibold"
+                    ? "bg-[#1351AA] text-[#E3E2DE]"
                     : "text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated"
                 }`}
               >
                 <Laptop className="w-3.5 h-3.5" />
-                <span>System</span>
+                <span>SYSTEM</span>
               </button>
               <button
                 type="button"
@@ -134,14 +133,14 @@ export function TopNav({
                   setTheme("light");
                   setIsThemeOpen(false);
                 }}
-                className={`w-full flex items-center space-x-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                className={`w-full flex items-center space-x-2.5 px-2.5 py-2 text-xs font-mono font-bold uppercase rounded-none transition-colors ${
                   theme === "light"
-                    ? "bg-accent-purple/15 text-accent-purple font-semibold"
+                    ? "bg-[#1351AA] text-[#E3E2DE]"
                     : "text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated"
                 }`}
               >
                 <Sun className="w-3.5 h-3.5" />
-                <span>Light</span>
+                <span>LIGHT</span>
               </button>
               <button
                 type="button"
@@ -149,14 +148,14 @@ export function TopNav({
                   setTheme("dark");
                   setIsThemeOpen(false);
                 }}
-                className={`w-full flex items-center space-x-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                className={`w-full flex items-center space-x-2.5 px-2.5 py-2 text-xs font-mono font-bold uppercase rounded-none transition-colors ${
                   theme === "dark"
-                    ? "bg-accent-purple/15 text-accent-purple font-semibold"
+                    ? "bg-[#1351AA] text-[#E3E2DE]"
                     : "text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated"
                 }`}
               >
                 <Moon className="w-3.5 h-3.5" />
-                <span>Dark</span>
+                <span>DARK</span>
               </button>
             </div>
           )}
@@ -169,8 +168,8 @@ export function TopNav({
           size="sm"
           icon={Plus}
         >
-          <span className="hidden sm:inline">Create link</span>
-          <span className="sm:hidden">Create</span>
+          <span className="hidden sm:inline">CREATE LINK</span>
+          <span className="sm:hidden">CREATE</span>
         </Button>
 
         {/* User Menu Avatar */}
@@ -178,20 +177,20 @@ export function TopNav({
           <button
             type="button"
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-            className="flex items-center space-x-1 p-0.5 rounded-full hover:ring-2 hover:ring-border-hover transition-all"
+            className="flex items-center space-x-1 p-0.5 rounded-none border border-border-subtle hover:border-[#141414] transition-all"
           >
-            <div className="w-7 h-7 rounded-full bg-accent-purple text-white font-bold text-xs flex items-center justify-center shadow-xs">
+            <div className="w-7 h-7 bg-[#1351AA] text-[#E3E2DE] font-bold text-xs flex items-center justify-center rounded-none">
               {user?.first_name ? user.first_name[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
             </div>
           </button>
 
           {isUserMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-bg-surface border border-border-subtle rounded-xl shadow-popover p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+            <div className="absolute right-0 mt-2 w-52 bg-bg-surface border border-border-subtle rounded-none shadow-none p-2 z-50 animate-fade-in-up">
               <div className="px-3 py-2 border-b border-border-subtle mb-1">
-                <p className="text-xs font-semibold text-txt-primary truncate">
+                <p className="text-xs font-bold text-txt-primary truncate uppercase">
                   {user?.first_name ? `${user.first_name} ${user.last_name || ""}` : "Account"}
                 </p>
-                <p className="text-[10px] text-txt-muted truncate">{user?.email}</p>
+                <p className="text-[10px] font-mono text-txt-muted truncate">{user?.email}</p>
               </div>
               <button
                 type="button"
@@ -199,10 +198,10 @@ export function TopNav({
                   logout();
                   setIsUserMenuOpen(false);
                 }}
-                className="w-full flex items-center space-x-2 px-2.5 py-1.5 text-xs text-accent-red hover:bg-accent-red/10 rounded-md transition-colors"
+                className="w-full flex items-center space-x-2 px-3 py-2 text-xs font-mono font-bold uppercase text-red-700 hover:bg-red-700/10 rounded-none transition-colors"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Log out</span>
+                <span>LOG OUT</span>
               </button>
             </div>
           )}

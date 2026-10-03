@@ -17,34 +17,34 @@ export function Input({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-xs font-medium text-txt-secondary select-none"
+          className="block text-xs font-mono font-bold tracking-wider text-[#444343] uppercase select-none"
         >
           {label}
         </label>
       )}
-      <div className="relative rounded-lg">
+      <div className="relative rounded-none">
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-txt-muted">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-txt-muted">
             <Icon className="w-4 h-4" />
           </div>
         )}
         <input
           id={inputId}
           type={type}
-          className={`w-full bg-bg-secondary border text-txt-primary text-xs rounded-lg ${
-            Icon ? "pl-9" : "px-3"
-          } py-2.5 transition-colors placeholder:text-txt-muted focus:outline-none ${
+          className={`w-full bg-bg-secondary border text-txt-primary text-xs rounded-none ${
+            Icon ? "pl-10" : "px-3.5"
+          } py-3 h-[44px] transition-colors placeholder:text-txt-muted focus:outline-none ${
             error
-              ? "border-accent-red focus:border-accent-red focus:ring-1 focus:ring-accent-red/40"
-              : "border-border-subtle hover:border-border-hover focus:border-accent-purple/60 focus:ring-1 focus:ring-accent-purple/40"
+              ? "border-red-700 focus:border-red-700 focus:ring-1 focus:ring-red-700"
+              : "border-border-subtle hover:border-border-hover focus:border-[#1351AA] focus:ring-1 focus:ring-[#1351AA]"
           } ${className}`}
           {...props}
         />
       </div>
       {error ? (
-        <p className="text-[11px] text-accent-red font-medium">{error}</p>
+        <p className="text-[11px] font-mono text-red-700 font-bold">{error}</p>
       ) : helperText ? (
-        <p className="text-[11px] text-txt-muted">{helperText}</p>
+        <p className="text-[11px] font-mono text-txt-muted">{helperText}</p>
       ) : null}
     </div>
   );
@@ -66,17 +66,17 @@ export function Select({
       {label && (
         <label
           htmlFor={selectId}
-          className="block text-xs font-medium text-txt-secondary select-none"
+          className="block text-xs font-mono font-bold tracking-wider text-[#444343] uppercase select-none"
         >
           {label}
         </label>
       )}
       <select
         id={selectId}
-        className={`w-full bg-bg-secondary border text-txt-primary text-xs rounded-lg px-3 py-2.5 transition-colors focus:outline-none ${
+        className={`w-full bg-bg-secondary border text-txt-primary text-xs rounded-none px-3.5 py-3 h-[44px] transition-colors focus:outline-none ${
           error
-            ? "border-accent-red focus:border-accent-red focus:ring-1 focus:ring-accent-red/40"
-            : "border-border-subtle hover:border-border-hover focus:border-accent-purple/60 focus:ring-1 focus:ring-accent-purple/40"
+            ? "border-red-700 focus:border-red-700 focus:ring-1 focus:ring-red-700"
+            : "border-border-subtle hover:border-border-hover focus:border-[#1351AA] focus:ring-1 focus:ring-[#1351AA]"
         } ${className}`}
         {...props}
       >
@@ -87,7 +87,7 @@ export function Select({
             </option>
           ))}
       </select>
-      {error && <p className="text-[11px] text-accent-red font-medium">{error}</p>}
+      {error && <p className="text-[11px] font-mono text-red-700 font-bold">{error}</p>}
     </div>
   );
 }

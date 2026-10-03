@@ -43,7 +43,12 @@ export function WorkspacesPage() {
     <ApplicationShell title="Workspace">
       <div className="space-y-6">
         <div className="border-b border-border-subtle pb-5">
-          <h2 className="text-xl font-bold text-txt-primary tracking-tight">
+          <div className="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-wider text-txt-muted mb-1 font-bold">
+            <span className="text-accent-purple">[ORGANIZATION]</span>
+            <span>/</span>
+            <span>TEAM MANAGEMENT</span>
+          </div>
+          <h2 className="text-xl font-black text-txt-primary uppercase tracking-tight">
             Workspaces & Team
           </h2>
           <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
@@ -52,9 +57,9 @@ export function WorkspacesPage() {
         </div>
 
         {/* Workspace Selector Grid */}
-        <Card>
+        <Card className="rounded-none border-border-subtle">
           <CardHeader
-            title="Available workspaces"
+            title="Available Workspaces"
             description="Select a workspace to switch active data context"
           />
           {isWsLoading ? (
@@ -67,19 +72,19 @@ export function WorkspacesPage() {
                   <div
                     key={ws.id}
                     onClick={() => setActiveWorkspace(ws)}
-                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                    className={`p-4 rounded-none border cursor-pointer transition-all ${
                       isSelected
-                        ? "bg-bg-elevated border-accent-purple/60 shadow-xs"
-                        : "bg-bg-surface border-border-subtle hover:border-border-hover"
+                        ? "bg-bg-elevated border-accent-purple"
+                        : "bg-bg-surface border-border-subtle hover:border-txt-primary"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2.5">
                         <Building2 className={`w-4 h-4 ${isSelected ? "text-accent-purple" : "text-txt-muted"}`} />
-                        <h4 className="font-semibold text-xs text-txt-primary">{ws.name}</h4>
+                        <h4 className="font-bold text-xs text-txt-primary uppercase tracking-tight">{ws.name}</h4>
                       </div>
                       {isSelected && (
-                        <span className="w-4 h-4 rounded-full bg-accent-purple/20 text-accent-purple flex items-center justify-center">
+                        <span className="w-4 h-4 rounded-none bg-accent-purple text-white flex items-center justify-center">
                           <Check className="w-3 h-3" />
                         </span>
                       )}
@@ -88,8 +93,8 @@ export function WorkspacesPage() {
                       <Badge variant={ws.role === "OWNER" ? "purple" : "default"}>
                         {ws.role}
                       </Badge>
-                      <span className="text-txt-muted font-numeric">
-                        {ws.member_count} {ws.member_count === 1 ? "member" : "members"}
+                      <span className="text-txt-muted font-mono text-[11px] font-bold uppercase tracking-wider">
+                        {ws.member_count} {ws.member_count === 1 ? "MEMBER" : "MEMBERS"}
                       </span>
                     </div>
                   </div>
@@ -101,10 +106,10 @@ export function WorkspacesPage() {
 
         {/* Members Management Table */}
         {activeWsId && (
-          <Card className="p-0 overflow-hidden">
+          <Card className="p-0 overflow-hidden rounded-none border-border-subtle">
             <div className="p-5 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-sm font-semibold text-txt-primary">
+                <h3 className="text-xs font-bold text-txt-primary uppercase tracking-wider font-mono">
                   Members in {activeWorkspace?.name || "Workspace"}
                 </h3>
                 <p className="text-xs text-txt-secondary mt-0.5">
@@ -116,7 +121,7 @@ export function WorkspacesPage() {
                 onClick={() => setSelectedWsForMember(activeWsId)}
                 icon={UserPlus}
               >
-                Add member
+                Add Member
               </Button>
             </div>
 
@@ -127,21 +132,21 @@ export function WorkspacesPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-bg-elevated/40 text-txt-muted uppercase tracking-wider border-b border-border-subtle">
+                  <thead className="bg-bg-elevated/40 text-txt-muted uppercase font-mono text-[10px] tracking-wider border-b border-border-subtle">
                     <tr>
-                      <th className="px-5 py-3 font-semibold">User</th>
-                      <th className="px-5 py-3 font-semibold">Email</th>
-                      <th className="px-5 py-3 font-semibold">Role</th>
-                      <th className="px-5 py-3 font-semibold text-right">Actions</th>
+                      <th className="px-5 py-3 font-bold">User</th>
+                      <th className="px-5 py-3 font-bold">Email</th>
+                      <th className="px-5 py-3 font-bold">Role</th>
+                      <th className="px-5 py-3 font-bold text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border-subtle">
                     {members.map((m) => (
                       <tr key={m.id} className="hover:bg-bg-elevated/40 transition-colors">
-                        <td className="px-5 py-3.5 font-medium text-txt-primary">
+                        <td className="px-5 py-3.5 font-bold text-txt-primary uppercase tracking-tight">
                           {m.user?.first_name ? `${m.user.first_name} ${m.user.last_name || ""}` : m.user?.email}
                         </td>
-                        <td className="px-5 py-3.5 text-txt-secondary">{m.user?.email}</td>
+                        <td className="px-5 py-3.5 font-mono text-txt-secondary">{m.user?.email}</td>
                         <td className="px-5 py-3.5">
                           <Badge variant={m.role === "OWNER" ? "purple" : "default"}>
                             {m.role}
@@ -156,7 +161,7 @@ export function WorkspacesPage() {
                                   removeMemberMutation.mutate({ wsId: activeWsId, memberId: m.id });
                                 }
                               }}
-                              className="p-1.5 text-txt-muted hover:text-accent-red hover:bg-accent-red/10 rounded-md transition-colors"
+                              className="p-1.5 text-txt-muted hover:text-accent-red hover:bg-accent-red/10 transition-colors rounded-none"
                               title="Remove member"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

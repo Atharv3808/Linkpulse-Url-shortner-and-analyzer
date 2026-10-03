@@ -40,8 +40,8 @@ export function CreateCampaignModal({ isOpen, onClose }) {
     <Modal isOpen={isOpen} onClose={onClose} title="Create Campaign">
       <form onSubmit={handleSubmit} className="space-y-4">
         {errorMsg && (
-          <div className="p-3 bg-accent-red/10 border border-accent-red/30 rounded-lg flex items-center space-x-2 text-xs text-accent-red font-medium">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="p-3 bg-accent-red/10 border border-accent-red/30 rounded-none flex items-center space-x-2 text-xs text-accent-red font-mono font-bold uppercase tracking-wider">
+            <AlertCircle className="w-4 h-4 shrink-0 text-accent-red" />
             <span>{errorMsg}</span>
           </div>
         )}

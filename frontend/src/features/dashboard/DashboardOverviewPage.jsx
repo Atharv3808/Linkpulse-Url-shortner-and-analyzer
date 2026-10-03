@@ -11,10 +11,6 @@ import {
   QrCode,
   BarChart2,
   ArrowUpRight,
-  Plus,
-  Share2,
-  Globe,
-  Monitor,
 } from "lucide-react";
 import { analyticsApi } from "../../api/analytics.api";
 import { linksApi } from "../../api/links.api";
@@ -25,7 +21,6 @@ import { formatNumber, truncateUrl, formatShortUrl } from "../../lib/formatters"
 import { ApplicationShell } from "../../components/layout/ApplicationShell";
 import { Card, CardHeader } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
-import { Button } from "../../components/ui/Button";
 import { CardSkeleton, TableSkeleton } from "../../components/ui/Skeleton";
 import { EmptyState } from "../../components/feedback/EmptyState";
 import { ClickTimelineChart } from "../../components/charts/ClickTimelineChart";
@@ -55,28 +50,28 @@ export function DashboardOverviewPage() {
 
   const kpis = [
     {
-      title: "Total clicks",
+      title: "TOTAL CLICKS",
       value: overview.total_clicks ?? 0,
       icon: MousePointerClick,
-      subtitle: "Lifetime recorded clicks",
+      subtitle: "LIFETIME RECORDED CLICKS",
     },
     {
-      title: "Unique visitors",
+      title: "UNIQUE VISITORS",
       value: overview.unique_visitors ?? 0,
       icon: Users,
-      subtitle: "Distinct IP signatures",
+      subtitle: "DISTINCT IP SIGNATURES",
     },
     {
-      title: "Active links",
+      title: "ACTIVE LINKS",
       value: overview.active_links ?? 0,
       icon: Link2,
-      subtitle: "Live short links",
+      subtitle: "LIVE SHORT LINKS",
     },
     {
-      title: "Bot traffic",
+      title: "BOT TRAFFIC",
       value: overview.bot_clicks ?? 0,
       icon: Bot,
-      subtitle: "Automated crawler clicks",
+      subtitle: "AUTOMATED CRAWLER CLICKS",
     },
   ];
 
@@ -85,10 +80,14 @@ export function DashboardOverviewPage() {
       <div className="space-y-6">
         {/* Header with Title and Concise Description */}
         <div className="border-b border-border-subtle pb-5">
-          <h2 className="text-xl font-bold text-txt-primary tracking-tight">
-            Overview
+          <div className="flex items-center space-x-2 text-xs font-mono font-bold tracking-widest text-txt-muted uppercase mb-1">
+            <span className="w-2 h-2 bg-[#1351AA]"></span>
+            <span>WORKSPACE SIGNAL</span>
+          </div>
+          <h2 className="text-2xl font-black text-txt-primary tracking-tight uppercase">
+            OVERVIEW
           </h2>
-          <p className="text-xs text-txt-secondary mt-1 max-w-xl leading-relaxed">
+          <p className="text-xs font-mono text-txt-secondary mt-1 max-w-xl leading-relaxed">
             Track your links, understand your audience, and measure what is working across your active workspace.
           </p>
         </div>
@@ -102,21 +101,21 @@ export function DashboardOverviewPage() {
                 return (
                   <Card
                     key={idx}
-                    className="relative hover:border-border-hover transition-colors flex flex-col justify-between min-h-[110px]"
+                    className="relative border border-border-subtle hover:border-[#1351AA] transition-colors flex flex-col justify-between min-h-[120px] rounded-none"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
+                      <span className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-widest">
                         {kpi.title}
                       </span>
-                      <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
-                        <Icon className="w-3.5 h-3.5" />
+                      <div className="p-1.5 bg-bg-elevated border border-border-subtle rounded-none text-txt-muted shrink-0">
+                        <Icon className="w-4 h-4 stroke-[1.75]" />
                       </div>
                     </div>
-                    <div className="mt-3">
-                      <div className="text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
+                    <div className="mt-4">
+                      <div className="text-3xl font-black text-txt-primary font-numeric tracking-tight leading-none">
                         {formatNumber(kpi.value)}
                       </div>
-                      <p className="text-xs text-txt-muted mt-2 leading-tight">
+                      <p className="text-[10px] font-mono text-txt-muted mt-2 tracking-wider uppercase">
                         {kpi.subtitle}
                       </p>
                     </div>
@@ -126,9 +125,9 @@ export function DashboardOverviewPage() {
         </div>
 
         {/* Click Performance Timeline Chart */}
-        <Card>
+        <Card className="rounded-none">
           <CardHeader
-            title="Click performance"
+            title="CLICK PERFORMANCE"
             description="Daily traffic volume and unique visitor trends"
           />
           {isOverviewLoading ? (
@@ -141,17 +140,17 @@ export function DashboardOverviewPage() {
         </Card>
 
         {/* Recent Links Table */}
-        <Card>
+        <Card className="rounded-none">
           <CardHeader
-            title="Recent links"
+            title="RECENT LINKS"
             description="Manage recent short links and view quick click statistics"
             action={
               <Link
                 to="/app/links"
-                className="text-xs font-semibold text-accent-purple hover:underline inline-flex items-center space-x-1"
+                className="text-xs font-mono font-bold text-[#1351AA] hover:text-txt-primary uppercase tracking-wider inline-flex items-center space-x-1"
               >
-                <span>View all links</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <span>VIEW ALL LINKS</span>
+                <ArrowUpRight className="w-4 h-4" />
               </Link>
             }
           />
@@ -160,37 +159,37 @@ export function DashboardOverviewPage() {
             <TableSkeleton rows={4} />
           ) : links.length === 0 ? (
             <EmptyState
-              title="No links yet"
+              title="NO LINKS YET"
               description="Create your first short link to start tracking click performance."
-              actionLabel="Create short link"
+              actionLabel="CREATE SHORT LINK"
               onAction={() => navigate("/app/links")}
             />
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-bg-elevated/40 text-txt-muted uppercase tracking-wider border-b border-border-subtle">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-bg-elevated text-txt-muted uppercase tracking-wider border-b border-border-subtle font-bold text-[11px]">
                   <tr>
-                    <th className="px-4 py-3 font-semibold">Short Link</th>
-                    <th className="px-4 py-3 font-semibold">Destination URL</th>
-                    <th className="px-4 py-3 font-semibold text-right">Clicks</th>
-                    <th className="px-4 py-3 font-semibold">Status</th>
-                    <th className="px-4 py-3 font-semibold text-right">Actions</th>
+                    <th className="px-4 py-3">SHORT LINK</th>
+                    <th className="px-4 py-3">DESTINATION URL</th>
+                    <th className="px-4 py-3 text-right">CLICKS</th>
+                    <th className="px-4 py-3">STATUS</th>
+                    <th className="px-4 py-3 text-right">ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle">
                   {links.map((link) => (
-                    <tr key={link.id} className="hover:bg-bg-elevated/40 transition-colors">
-                      <td className="px-4 py-3 font-medium text-txt-primary">
+                    <tr key={link.id} className="hover:bg-bg-elevated/60 transition-colors">
+                      <td className="px-4 py-3 font-bold text-txt-primary">
                         <div className="flex items-center space-x-2">
                           <Link
                             to={`/app/links/${link.id}`}
-                            className="text-accent-purple hover:underline font-semibold"
+                            className="text-[#1351AA] hover:underline font-bold"
                           >
                             /{link.short_code}
                           </Link>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-txt-secondary">
+                      <td className="px-4 py-3 text-txt-secondary font-sans text-xs">
                         <a
                           href={link.original_url}
                           target="_blank"
@@ -201,12 +200,12 @@ export function DashboardOverviewPage() {
                           <ExternalLink className="w-3 h-3 text-txt-muted shrink-0" />
                         </a>
                       </td>
-                      <td className="px-4 py-3 text-right font-numeric font-semibold text-txt-primary">
+                      <td className="px-4 py-3 text-right font-numeric font-bold text-txt-primary">
                         {formatNumber(link.click_count)}
                       </td>
                       <td className="px-4 py-3">
                         <Badge variant={link.is_active ? "active" : "inactive"}>
-                          {link.is_active ? "Active" : "Disabled"}
+                          {link.is_active ? "ACTIVE" : "DISABLED"}
                         </Badge>
                       </td>
                       <td className="px-4 py-3 text-right">
@@ -214,21 +213,21 @@ export function DashboardOverviewPage() {
                           <button
                             onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                             title="Copy Short URL"
-                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
+                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                           >
                             <Copy className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => setSelectedQrLink(link)}
                             title="View QR Code"
-                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
+                            className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                           >
                             <QrCode className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => navigate(`/app/links/${link.id}`)}
                             title="View Link Analytics"
-                            className="p-1.5 text-accent-purple hover:bg-accent-purple/10 rounded-md transition-colors"
+                            className="p-1.5 text-[#1351AA] hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                           >
                             <BarChart2 className="w-3.5 h-3.5" />
                           </button>

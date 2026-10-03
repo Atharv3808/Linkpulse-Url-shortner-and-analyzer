@@ -61,10 +61,14 @@ export function LinksPage() {
         {/* Header & Primary Action */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-5">
           <div>
-            <h2 className="text-xl font-bold text-txt-primary tracking-tight">
-              Links
+            <div className="flex items-center space-x-2 text-xs font-mono font-bold tracking-widest text-txt-muted uppercase mb-1">
+              <span className="w-2 h-2 bg-[#1351AA]"></span>
+              <span>MANAGEMENT</span>
+            </div>
+            <h2 className="text-2xl font-black text-txt-primary tracking-tight uppercase">
+              LINKS
             </h2>
-            <p className="text-xs text-txt-secondary mt-1 leading-relaxed max-w-xl">
+            <p className="text-xs font-mono text-txt-secondary mt-1 leading-relaxed max-w-xl">
               Create, organize and monitor your short links and custom alias destinations.
             </p>
           </div>
@@ -75,7 +79,7 @@ export function LinksPage() {
             size="sm"
             icon={Plus}
           >
-            Create link
+            CREATE LINK
           </Button>
         </div>
 
@@ -83,7 +87,7 @@ export function LinksPage() {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex-1 max-w-md">
             <Input
-              placeholder="Search by title, short code, or URL..."
+              placeholder="SEARCH BY TITLE, SHORT CODE, OR URL..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               icon={Search}
@@ -91,24 +95,24 @@ export function LinksPage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-1.5 bg-bg-secondary border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-txt-muted">
-              <Filter className="w-3.5 h-3.5" />
-              <span className="font-medium text-txt-secondary hidden sm:inline">Status:</span>
+            <div className="flex items-center space-x-2 bg-bg-secondary border border-border-subtle rounded-none px-3 py-2 text-xs font-mono">
+              <Filter className="w-3.5 h-3.5 text-txt-muted" />
+              <span className="font-bold text-txt-secondary uppercase hidden sm:inline">STATUS:</span>
               <select
                 value={activeFilter}
                 onChange={(e) => setActiveFilter(e.target.value)}
-                className="bg-transparent text-txt-primary focus:outline-none cursor-pointer"
+                className="bg-transparent text-txt-primary font-bold uppercase focus:outline-none cursor-pointer"
               >
-                <option value="">All status</option>
-                <option value="true">Active</option>
-                <option value="false">Disabled</option>
+                <option value="">ALL STATUS</option>
+                <option value="true">ACTIVE</option>
+                <option value="false">DISABLED</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Links Data Container */}
-        <Card className="p-0 sm:p-0 overflow-hidden">
+        <Card className="p-0 sm:p-0 overflow-hidden rounded-none">
           {isLoading ? (
             <div className="p-6">
               <TableSkeleton rows={6} />
@@ -116,13 +120,13 @@ export function LinksPage() {
           ) : links.length === 0 ? (
             <div className="p-6">
               <EmptyState
-                title="No links found"
+                title="NO LINKS FOUND"
                 description={
                   search
                     ? "No short links match your current search query."
                     : "Create your first short link and start tracking clicks."
                 }
-                actionLabel="Create link"
+                actionLabel="CREATE LINK"
                 onAction={() => setIsCreateModalOpen(true)}
               />
             </div>
@@ -130,37 +134,37 @@ export function LinksPage() {
             <>
               {/* Desktop Table View */}
               <div className="hidden md:block overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-bg-elevated/40 text-txt-muted uppercase tracking-wider border-b border-border-subtle">
+                <table className="w-full text-left text-xs font-mono">
+                  <thead className="bg-bg-elevated text-txt-muted uppercase tracking-wider border-b border-border-subtle font-bold text-[11px]">
                     <tr>
-                      <th className="px-5 py-3 font-semibold">Short Link</th>
-                      <th className="px-5 py-3 font-semibold">Destination URL</th>
-                      <th className="px-5 py-3 font-semibold text-right">Clicks</th>
-                      <th className="px-5 py-3 font-semibold">Status</th>
-                      <th className="px-5 py-3 font-semibold">Created</th>
-                      <th className="px-5 py-3 font-semibold text-right">Actions</th>
+                      <th className="px-5 py-3.5">SHORT LINK</th>
+                      <th className="px-5 py-3.5">DESTINATION URL</th>
+                      <th className="px-5 py-3.5 text-right">CLICKS</th>
+                      <th className="px-5 py-3.5">STATUS</th>
+                      <th className="px-5 py-3.5">CREATED</th>
+                      <th className="px-5 py-3.5 text-right">ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border-subtle">
                     {links.map((link) => (
-                      <tr key={link.id} className="hover:bg-bg-elevated/40 transition-colors">
-                        <td className="px-5 py-3.5 font-medium text-txt-primary">
+                      <tr key={link.id} className="hover:bg-bg-elevated/60 transition-colors">
+                        <td className="px-5 py-3.5 font-bold text-txt-primary">
                           <div className="space-y-0.5">
                             {link.title && (
-                              <p className="font-semibold text-txt-primary truncate max-w-xs">
+                              <p className="font-bold text-txt-primary truncate max-w-xs uppercase">
                                 {link.title}
                               </p>
                             )}
                             <button
                               type="button"
                               onClick={() => navigate(`/app/links/${link.id}`)}
-                              className="text-accent-purple font-semibold hover:underline"
+                              className="text-[#1351AA] font-bold hover:underline"
                             >
                               /{link.short_code}
                             </button>
                           </div>
                         </td>
-                        <td className="px-5 py-3.5 text-txt-secondary max-w-xs truncate">
+                        <td className="px-5 py-3.5 text-txt-secondary font-sans text-xs max-w-xs truncate">
                           <a
                             href={link.original_url}
                             target="_blank"
@@ -171,12 +175,12 @@ export function LinksPage() {
                             <ExternalLink className="w-3 h-3 text-txt-muted shrink-0" />
                           </a>
                         </td>
-                        <td className="px-5 py-3.5 text-right font-numeric font-semibold text-txt-primary">
+                        <td className="px-5 py-3.5 text-right font-numeric font-bold text-txt-primary">
                           {formatNumber(link.click_count)}
                         </td>
                         <td className="px-5 py-3.5">
                           <Badge variant={link.is_active ? "active" : "inactive"}>
-                            {link.is_active ? "Active" : "Disabled"}
+                            {link.is_active ? "ACTIVE" : "DISABLED"}
                           </Badge>
                         </td>
                         <td className="px-5 py-3.5 text-txt-muted font-numeric">
@@ -188,7 +192,7 @@ export function LinksPage() {
                               type="button"
                               onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                               title="Copy Short URL"
-                              className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
+                              className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                             >
                               <Copy className="w-3.5 h-3.5" />
                             </button>
@@ -196,7 +200,7 @@ export function LinksPage() {
                               type="button"
                               onClick={() => setSelectedQrLink(link)}
                               title="View QR Code"
-                              className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
+                              className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                             >
                               <QrCode className="w-3.5 h-3.5" />
                             </button>
@@ -204,7 +208,7 @@ export function LinksPage() {
                               type="button"
                               onClick={() => navigate(`/app/links/${link.id}`)}
                               title="View Analytics"
-                              className="p-1.5 text-accent-purple hover:bg-accent-purple/10 rounded-md transition-colors"
+                              className="p-1.5 text-[#1351AA] hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                             >
                               <BarChart2 className="w-3.5 h-3.5" />
                             </button>
@@ -217,7 +221,7 @@ export function LinksPage() {
                                   }
                                 }}
                                 title="Deactivate Link"
-                                className="p-1.5 text-txt-muted hover:text-accent-red hover:bg-accent-red/10 rounded-md transition-colors"
+                                className="p-1.5 text-txt-muted hover:text-red-700 hover:bg-bg-elevated rounded-none transition-colors border border-transparent hover:border-border-subtle"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -231,28 +235,28 @@ export function LinksPage() {
               </div>
 
               {/* Mobile Structured Cards View */}
-              <div className="block md:hidden divide-y divide-border-subtle">
+              <div className="block md:hidden divide-y divide-border-subtle font-mono">
                 {links.map((link) => (
                   <div key={link.id} className="p-4 space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         {link.title && (
-                          <p className="text-xs font-semibold text-txt-primary">{link.title}</p>
+                          <p className="text-xs font-bold text-txt-primary uppercase">{link.title}</p>
                         )}
-                        <span className="text-sm font-bold text-accent-purple">
+                        <span className="text-sm font-bold text-[#1351AA]">
                           /{link.short_code}
                         </span>
                       </div>
                       <Badge variant={link.is_active ? "active" : "inactive"}>
-                        {link.is_active ? "Active" : "Disabled"}
+                        {link.is_active ? "ACTIVE" : "DISABLED"}
                       </Badge>
                     </div>
 
-                    <p className="text-xs text-txt-secondary truncate">
+                    <p className="text-xs text-txt-secondary font-sans truncate">
                       {link.original_url}
                     </p>
 
-                    <div className="flex items-center justify-between text-xs pt-1 border-t border-border-subtle/50">
+                    <div className="flex items-center justify-between text-xs pt-2 border-t border-border-subtle/50">
                       <span className="text-txt-muted font-numeric">
                         {formatNumber(link.click_count)} clicks
                       </span>
@@ -260,16 +264,16 @@ export function LinksPage() {
                         <button
                           type="button"
                           onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
-                          className="px-2.5 py-1 text-[11px] font-medium bg-bg-elevated text-txt-primary rounded-md border border-border-subtle"
+                          className="px-3 py-1.5 text-[11px] font-bold bg-bg-elevated text-txt-primary rounded-none border border-border-subtle uppercase"
                         >
-                          Copy
+                          COPY
                         </button>
                         <button
                           type="button"
                           onClick={() => navigate(`/app/links/${link.id}`)}
-                          className="px-2.5 py-1 text-[11px] font-medium bg-accent-purple/10 text-accent-purple rounded-md border border-accent-purple/20"
+                          className="px-3 py-1.5 text-[11px] font-bold bg-[#1351AA] text-[#E3E2DE] rounded-none border border-[#1351AA] uppercase"
                         >
-                          Analytics
+                          ANALYTICS
                         </button>
                       </div>
                     </div>

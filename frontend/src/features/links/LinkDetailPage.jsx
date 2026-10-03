@@ -78,9 +78,9 @@ export function LinkDetailPage() {
       <ApplicationShell title="Link Analytics">
         <div className="py-12">
           <EmptyState
-            title="Unable to load analytics"
+            title="UNABLE TO LOAD ANALYTICS"
             description={error.message || "We couldn't retrieve analytics data for this short link."}
-            actionLabel="Back to links"
+            actionLabel="BACK TO LINKS"
             onAction={() => navigate("/app/links")}
           />
         </div>
@@ -96,23 +96,23 @@ export function LinkDetailPage() {
           <button
             type="button"
             onClick={() => navigate("/app/links")}
-            className="inline-flex items-center space-x-2 text-xs font-semibold text-txt-secondary hover:text-txt-primary transition-colors w-fit"
+            className="inline-flex items-center space-x-2 text-xs font-mono font-bold text-txt-secondary hover:text-txt-primary uppercase tracking-wider transition-colors w-fit cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>← Back to links</span>
+            <span>← BACK TO LINKS</span>
           </button>
 
           <div className="flex items-center space-x-2">
             <select
               value={range}
               onChange={(e) => setRange(e.target.value)}
-              className="bg-bg-elevated border border-border-subtle text-txt-secondary text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-accent-purple/60 focus:ring-1 focus:ring-accent-purple/40 min-h-[34px]"
+              className="bg-bg-elevated border border-border-subtle text-txt-primary font-mono text-xs rounded-none px-3 py-2 focus:outline-none focus:border-[#1351AA] font-bold uppercase min-h-[38px] cursor-pointer"
             >
-              <option value="today">Today</option>
-              <option value="24h">Last 24 hours</option>
-              <option value="7d">Last 7 days</option>
-              <option value="30d">Last 30 days</option>
-              <option value="90d">Last 90 days</option>
+              <option value="today">TODAY</option>
+              <option value="24h">LAST 24 HOURS</option>
+              <option value="7d">LAST 7 DAYS</option>
+              <option value="30d">LAST 30 DAYS</option>
+              <option value="90d">LAST 90 DAYS</option>
             </select>
 
             <Button
@@ -122,7 +122,7 @@ export function LinkDetailPage() {
               isLoading={isExporting}
               icon={Download}
             >
-              Export CSV
+              EXPORT CSV
             </Button>
           </div>
         </div>
@@ -131,11 +131,11 @@ export function LinkDetailPage() {
         {isLoading ? (
           <CardSkeleton />
         ) : (
-          <Card className="bg-bg-surface border-l-2 border-l-accent-purple">
+          <Card className="bg-bg-surface border border-border-subtle border-l-4 border-l-[#1351AA] rounded-none">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="space-y-1 min-w-0">
+              <div className="space-y-1.5 min-w-0">
                 <div className="flex items-center space-x-2">
-                  <h2 className="text-lg font-bold text-txt-primary tracking-tight">
+                  <h2 className="text-xl font-black text-txt-primary uppercase tracking-tight">
                     {link.title || link.short_code}
                   </h2>
                   {link.short_code && <Badge variant="purple">/{link.short_code}</Badge>}
@@ -152,7 +152,7 @@ export function LinkDetailPage() {
                   onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                   icon={Copy}
                 >
-                  Copy
+                  COPY
                 </Button>
                 <Button
                   variant="outline"
@@ -160,14 +160,14 @@ export function LinkDetailPage() {
                   onClick={() => setIsQrOpen(true)}
                   icon={QrCode}
                 >
-                  QR Code
+                  QR CODE
                 </Button>
                 {link.original_url && (
                   <a
                     href={link.original_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="p-2 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-lg transition-colors border border-border-subtle"
+                    className="p-2.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-none transition-colors border border-border-subtle"
                     aria-label="Open destination URL"
                   >
                     <ExternalLink className="w-4 h-4" />
@@ -180,11 +180,11 @@ export function LinkDetailPage() {
 
         {/* Traffic Intelligence Insights */}
         {insights.length > 0 && (
-          <div className="bg-bg-elevated/60 border border-border-subtle rounded-xl p-4 flex items-start space-x-3 text-xs text-txt-primary">
-            <Sparkles className="w-4 h-4 text-accent-purple shrink-0 mt-0.5" />
+          <div className="bg-bg-surface border border-[#141414] rounded-none p-5 flex items-start space-x-3 text-xs text-txt-primary font-mono">
+            <Sparkles className="w-4 h-4 text-[#1351AA] shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <p className="font-semibold text-txt-primary">Traffic insights</p>
-              <ul className="list-disc list-inside space-y-1 text-txt-secondary">
+              <p className="font-bold uppercase tracking-wider text-[#141414]">SIGNAL INSIGHTS</p>
+              <ul className="list-disc list-inside space-y-1 text-txt-secondary font-sans text-xs">
                 {insights.map((insight, idx) => (
                   <li key={idx}>{insight}</li>
                 ))}
@@ -195,67 +195,67 @@ export function LinkDetailPage() {
 
         {/* Summary Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="flex flex-col justify-between min-h-[100px]">
+          <Card className="flex flex-col justify-between min-h-[110px] rounded-none border border-border-subtle">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
-                Total clicks
+              <span className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-widest">
+                TOTAL CLICKS
               </span>
-              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
-                <MousePointerClick className="w-3.5 h-3.5" />
+              <div className="p-1.5 bg-bg-elevated border border-border-subtle rounded-none text-txt-muted shrink-0">
+                <MousePointerClick className="w-4 h-4 stroke-[1.75]" />
               </div>
             </div>
-            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
+            <div className="mt-3 text-3xl font-black text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.total_clicks ?? 0)}
             </div>
           </Card>
 
-          <Card className="flex flex-col justify-between min-h-[100px]">
+          <Card className="flex flex-col justify-between min-h-[110px] rounded-none border border-border-subtle">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
-                Unique visitors
+              <span className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-widest">
+                UNIQUE VISITORS
               </span>
-              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
-                <Users className="w-3.5 h-3.5" />
+              <div className="p-1.5 bg-bg-elevated border border-border-subtle rounded-none text-txt-muted shrink-0">
+                <Users className="w-4 h-4 stroke-[1.75]" />
               </div>
             </div>
-            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
+            <div className="mt-3 text-3xl font-black text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.unique_visitors ?? 0)}
             </div>
           </Card>
 
-          <Card className="flex flex-col justify-between min-h-[100px]">
+          <Card className="flex flex-col justify-between min-h-[110px] rounded-none border border-border-subtle">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
-                Human traffic
+              <span className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-widest">
+                HUMAN TRAFFIC
               </span>
-              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
-                <UserCheck className="w-3.5 h-3.5" />
+              <div className="p-1.5 bg-bg-elevated border border-border-subtle rounded-none text-txt-muted shrink-0">
+                <UserCheck className="w-4 h-4 stroke-[1.75]" />
               </div>
             </div>
-            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
+            <div className="mt-3 text-3xl font-black text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.human_clicks ?? 0)}
             </div>
           </Card>
 
-          <Card className="flex flex-col justify-between min-h-[100px]">
+          <Card className="flex flex-col justify-between min-h-[110px] rounded-none border border-border-subtle">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-txt-secondary uppercase tracking-wider">
-                Bot / Crawlers
+              <span className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-widest">
+                BOT / CRAWLERS
               </span>
-              <div className="p-1.5 bg-bg-elevated/80 border border-border-subtle rounded-lg text-txt-muted shrink-0">
-                <Bot className="w-3.5 h-3.5" />
+              <div className="p-1.5 bg-bg-elevated border border-border-subtle rounded-none text-txt-muted shrink-0">
+                <Bot className="w-4 h-4 stroke-[1.75]" />
               </div>
             </div>
-            <div className="mt-3 text-2xl font-bold text-txt-primary font-numeric tracking-tight leading-none">
+            <div className="mt-3 text-3xl font-black text-txt-primary font-numeric tracking-tight leading-none">
               {formatNumber(summary.bot_clicks ?? 0)}
             </div>
           </Card>
         </div>
 
         {/* Click Performance Chart */}
-        <Card>
+        <Card className="rounded-none">
           <CardHeader
-            title="Click performance"
+            title="CLICK PERFORMANCE"
             description="Daily traffic trends and unique visitor activity over time"
           />
           {isLoading ? <CardSkeleton /> : <ClickTimelineChart data={timeline} />}
@@ -264,47 +264,47 @@ export function LinkDetailPage() {
         {/* Audience Breakdown Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Top Locations */}
-          <Card>
+          <Card className="rounded-none">
             <CardHeader
-              title="Top locations"
+              title="TOP LOCATIONS"
               description="Visitor geographic distribution"
             />
             {isLoading ? <CardSkeleton /> : <CountryBarChart countries={countries} />}
           </Card>
 
           {/* Devices */}
-          <Card>
+          <Card className="rounded-none">
             <CardHeader
-              title="Devices"
+              title="DEVICES"
               description="User agent and device type distribution"
             />
             {isLoading ? <CardSkeleton /> : <DeviceDonutChart devices={devices} />}
           </Card>
 
           {/* Traffic Sources */}
-          <Card>
+          <Card className="rounded-none">
             <CardHeader
-              title="Traffic sources"
+              title="TRAFFIC SOURCES"
               description="Top referring domains and platforms"
             />
             {isLoading ? (
               <CardSkeleton />
             ) : referrers.length === 0 ? (
-              <p className="text-xs text-txt-muted text-center py-8">No referrer data recorded.</p>
+              <p className="text-xs font-mono text-txt-muted text-center py-8 uppercase">No referrer data recorded.</p>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-2 font-mono">
                 {referrers.map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-2.5 bg-bg-elevated/40 border border-border-subtle rounded-lg text-xs"
+                    className="flex items-center justify-between p-3 bg-bg-surface border border-border-subtle rounded-none text-xs"
                   >
                     <div className="flex items-center space-x-2 truncate">
                       <Share2 className="w-3.5 h-3.5 text-txt-muted shrink-0" />
-                      <span className="font-medium text-txt-primary truncate">
+                      <span className="font-bold text-txt-primary truncate uppercase">
                         {item.source}
                       </span>
                     </div>
-                    <span className="font-semibold text-txt-primary font-numeric">
+                    <span className="font-bold text-txt-primary font-numeric">
                       {formatNumber(item.clicks)}
                     </span>
                   </div>

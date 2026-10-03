@@ -40,8 +40,8 @@ export function AddMemberModal({ isOpen, onClose, workspaceId }) {
     <Modal isOpen={isOpen} onClose={onClose} title="Add Workspace Member">
       <form onSubmit={handleSubmit} className="space-y-4">
         {errorMsg && (
-          <div className="p-3 bg-accent-red/10 border border-accent-red/30 rounded-lg flex items-center space-x-2 text-xs text-accent-red font-medium">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="p-3 bg-accent-red/10 border border-accent-red/30 rounded-none flex items-center space-x-2 text-xs text-accent-red font-mono font-bold uppercase tracking-wider">
+            <AlertCircle className="w-4 h-4 shrink-0 text-accent-red" />
             <span>{errorMsg}</span>
           </div>
         )}
@@ -57,16 +57,16 @@ export function AddMemberModal({ isOpen, onClose, workspaceId }) {
         />
 
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-txt-secondary uppercase tracking-wider">
-            Role Permission *
+          <label className="block text-[10px] font-mono font-bold text-txt-secondary uppercase tracking-wider">
+            ROLE PERMISSION *
           </label>
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            className="w-full bg-bg-elevated border border-border-subtle text-txt-primary text-sm rounded-lg p-2.5 focus:outline-none focus:border-accent-purple"
+            className="w-full bg-bg-surface border border-border-subtle text-txt-primary text-xs rounded-none p-2.5 font-mono focus:outline-none focus:border-accent-purple"
           >
-            <option value="MEMBER">Member (View & Create Links)</option>
-            <option value="ADMIN">Admin (Full Access & Add Members)</option>
+            <option value="MEMBER">MEMBER (VIEW & CREATE LINKS)</option>
+            <option value="ADMIN">ADMIN (FULL ACCESS & ADD MEMBERS)</option>
           </select>
         </div>
 

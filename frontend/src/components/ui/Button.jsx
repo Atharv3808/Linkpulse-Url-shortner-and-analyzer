@@ -14,26 +14,26 @@ export function Button({
   ...props
 }) {
   const baseStyles =
-    "inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent-purple/40 disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-md";
+    "inline-flex items-center justify-center font-bold tracking-[0.08em] uppercase transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#1351AA] focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-none cursor-pointer";
 
   const variants = {
     primary:
-      "bg-accent-purple text-white hover:bg-accent-purple-hover shadow-xs active:scale-[0.99]",
+      "bg-[#1351AA] text-[#E3E2DE] hover:bg-[#141414] active:bg-[#141414]",
     secondary:
-      "bg-bg-secondary text-txt-primary hover:bg-bg-elevated border border-border-subtle hover:border-border-hover active:scale-[0.99]",
+      "bg-[#141414] text-[#E3E2DE] hover:bg-[#1351AA] border border-[#141414]",
     outline:
-      "bg-transparent text-txt-primary border border-border-subtle hover:bg-bg-elevated hover:border-border-hover active:scale-[0.99]",
+      "bg-transparent text-txt-primary border border-border-subtle hover:border-[#141414] hover:bg-[#141414] hover:text-[#E3E2DE]",
     ghost:
-      "bg-transparent text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated active:scale-[0.99]",
+      "bg-transparent text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated font-mono",
     danger:
-      "bg-accent-red text-white hover:opacity-90 shadow-xs active:scale-[0.99]",
+      "bg-red-700 text-white hover:bg-[#141414] active:bg-[#141414]",
   };
 
   const sizes = {
-    xs: "text-[11px] px-2 py-1 space-x-1.5 min-h-[28px]",
-    sm: "text-xs px-3 py-1.5 space-x-1.5 min-h-[32px]",
-    md: "text-xs px-3.5 py-2 space-x-2 min-h-[36px]",
-    lg: "text-sm px-4.5 py-2.5 space-x-2 min-h-[42px]",
+    xs: "text-[10px] px-2.5 py-1 space-x-1.5 min-h-[28px]",
+    sm: "text-xs px-3.5 py-1.5 space-x-1.5 min-h-[36px]",
+    md: "text-xs px-4 py-2.5 space-x-2 min-h-[44px]",
+    lg: "text-sm px-6 py-3 space-x-2.5 min-h-[52px]",
   };
 
   const iconSizes = {
@@ -47,7 +47,7 @@ export function Button({
     <button
       type={type}
       disabled={disabled || isLoading}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`${baseStyles} ${variants[variant] || variants.primary} ${sizes[size]} ${className}`}
       {...props}
     >
       {isLoading ? (
@@ -74,12 +74,12 @@ export function IconButton({
   ...props
 }) {
   const baseStyles =
-    "inline-flex items-center justify-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent-purple/40 disabled:opacity-50 disabled:cursor-not-allowed rounded-md text-txt-secondary hover:text-txt-primary";
+    "inline-flex items-center justify-center transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#1351AA] disabled:opacity-50 disabled:cursor-not-allowed rounded-none text-txt-secondary hover:text-txt-primary cursor-pointer";
 
   const variants = {
     ghost: "bg-transparent hover:bg-bg-elevated",
-    outline: "bg-transparent border border-border-subtle hover:bg-bg-elevated hover:border-border-hover",
-    secondary: "bg-bg-secondary border border-border-subtle hover:bg-bg-elevated",
+    outline: "bg-transparent border border-border-subtle hover:bg-[#141414] hover:text-[#E3E2DE]",
+    secondary: "bg-bg-secondary border border-border-subtle hover:bg-[#141414] hover:text-[#E3E2DE]",
   };
 
   const sizes = {
@@ -101,7 +101,7 @@ export function IconButton({
       type="button"
       title={label}
       aria-label={label}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`${baseStyles} ${variants[variant] || variants.ghost} ${sizes[size]} ${className}`}
       {...props}
     >
       <Icon className={iconSizes[size]} />

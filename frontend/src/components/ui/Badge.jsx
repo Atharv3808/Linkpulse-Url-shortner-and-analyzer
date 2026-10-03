@@ -2,16 +2,16 @@ import React from "react";
 
 export function Badge({ children, variant = "default", className = "" }) {
   const baseStyles =
-    "inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-md border tracking-tight shrink-0 select-none";
+    "inline-flex items-center text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-none border shrink-0 select-none";
 
   const variants = {
     default: "bg-bg-elevated text-txt-secondary border-border-subtle",
-    purple: "bg-accent-purple/10 text-accent-purple border-accent-purple/20",
-    teal: "bg-accent-teal/10 text-accent-teal border-accent-teal/20",
-    active: "bg-accent-green/10 text-accent-green border-accent-green/20",
+    purple: "bg-[#1351AA]/10 text-[#1351AA] border-[#1351AA]/30",
+    teal: "bg-[#1351AA]/10 text-[#1351AA] border-[#1351AA]/30",
+    active: "bg-[#1351AA]/10 text-[#1351AA] border-[#1351AA]/30",
     inactive: "bg-txt-muted/10 text-txt-muted border-border-subtle",
-    warning: "bg-accent-yellow/10 text-accent-yellow border-accent-yellow/20",
-    danger: "bg-accent-red/10 text-accent-red border-accent-red/20",
+    warning: "bg-amber-500/10 text-amber-700 border-amber-500/30",
+    danger: "bg-red-700/10 text-red-700 border-red-700/30",
   };
 
   return (

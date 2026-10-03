@@ -11,14 +11,13 @@ import {
   Sun,
   Moon,
   Laptop,
-  Command,
   X,
 } from "lucide-react";
 import { useThemeStore } from "../../store/useThemeStore";
 
 export function CommandPalette({ isOpen, onClose, onCreateLink }) {
   const navigate = useNavigate();
-  const { theme, setTheme } = useThemeStore();
+  const { setTheme } = useThemeStore();
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -28,7 +27,6 @@ export function CommandPalette({ isOpen, onClose, onCreateLink }) {
         if (isOpen) {
           onClose();
         } else {
-          // Trigger open via document event or parent handler
           window.dispatchEvent(new CustomEvent("open-command-palette"));
         }
       }
@@ -156,19 +154,19 @@ export function CommandPalette({ isOpen, onClose, onCreateLink }) {
       />
 
       {/* Palette Container */}
-      <div className="relative w-full max-w-xl bg-bg-surface border border-border-subtle rounded-xl shadow-popover overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-xl bg-bg-surface border border-border-subtle rounded-none overflow-hidden z-10 animate-fade-in-up">
         {/* Search Input */}
-        <div className="flex items-center px-4 py-3 border-b border-border-subtle">
+        <div className="flex items-center px-4 py-3.5 border-b border-border-subtle">
           <Search className="w-4 h-4 text-txt-muted mr-3 shrink-0" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type a command or search..."
-            className="w-full bg-transparent text-txt-primary text-xs focus:outline-none placeholder:text-txt-muted"
+            placeholder="TYPE A COMMAND OR SEARCH..."
+            className="w-full bg-transparent text-txt-primary text-xs font-mono focus:outline-none uppercase placeholder:text-txt-muted"
           />
-          <span className="text-[10px] font-mono text-txt-muted bg-bg-elevated border border-border-subtle px-1.5 py-0.5 rounded mr-2">
+          <span className="text-[10px] font-mono text-txt-muted bg-bg-elevated border border-border-subtle px-2 py-0.5 rounded-none mr-2">
             ESC
           </span>
           <button
@@ -181,15 +179,15 @@ export function CommandPalette({ isOpen, onClose, onCreateLink }) {
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2 space-y-3">
+        <div className="max-h-80 overflow-y-auto p-3 space-y-4">
           {filteredGroups.length === 0 ? (
-            <p className="text-xs text-txt-muted text-center py-6">
+            <p className="text-xs font-mono text-txt-muted text-center py-6 uppercase">
               No matching commands found.
             </p>
           ) : (
             filteredGroups.map((group) => (
               <div key={group.group} className="space-y-1">
-                <div className="text-[10px] font-semibold text-txt-muted uppercase tracking-wider px-2 py-1">
+                <div className="text-[10px] font-mono font-bold text-txt-muted uppercase tracking-widest px-2 py-1">
                   {group.group}
                 </div>
                 {group.options.map((opt) => {
@@ -199,10 +197,10 @@ export function CommandPalette({ isOpen, onClose, onCreateLink }) {
                       key={opt.id}
                       type="button"
                       onClick={opt.action}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-xs rounded-lg text-txt-secondary hover:text-txt-primary hover:bg-bg-elevated transition-colors text-left"
+                      className="w-full flex items-center space-x-3 px-3 py-2.5 text-xs rounded-none text-txt-secondary hover:text-[#1351AA] hover:bg-bg-elevated transition-colors text-left font-mono font-bold uppercase tracking-wider"
                     >
                       <Icon className="w-4 h-4 text-txt-muted shrink-0" />
-                      <span className="flex-1 font-medium">{opt.title}</span>
+                      <span className="flex-1">{opt.title}</span>
                     </button>
                   );
                 })}
