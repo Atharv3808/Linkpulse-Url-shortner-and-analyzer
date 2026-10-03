@@ -17,7 +17,7 @@ import {
 import { analyticsApi } from "../../api/analytics.api";
 import { queryKeys } from "../../lib/queryKeys";
 import { useCopy } from "../../hooks/useCopy";
-import { formatNumber } from "../../lib/formatters";
+import { formatNumber, formatShortUrl } from "../../lib/formatters";
 import { ApplicationShell } from "../../components/layout/ApplicationShell";
 import { Card, CardHeader } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
@@ -149,7 +149,7 @@ export function LinkDetailPage() {
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => copy(link.short_url || `http://localhost:8000/${link.short_code}`, "Short URL")}
+                  onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                   icon={Copy}
                 >
                   Copy
@@ -319,7 +319,7 @@ export function LinkDetailPage() {
       <QRCodeModal
         isOpen={isQrOpen}
         onClose={() => setIsQrOpen(false)}
-        link={{ id: linkId, short_code: link.short_code, original_url: link.original_url }}
+        link={{ id: linkId, short_code: link.short_code, short_url: link.short_url, original_url: link.original_url }}
       />
     </ApplicationShell>
   );

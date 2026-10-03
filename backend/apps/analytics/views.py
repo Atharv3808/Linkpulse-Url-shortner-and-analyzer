@@ -60,7 +60,10 @@ class LinkAnalyticsDetailView(LinkAnalyticsBaseView):
     def get(self, request, link_id):
         link = self.get_link(link_id, request.user)
         range_param = request.query_params.get("range", "30d")
-        data = AnalyticsService.get_full_link_analytics(link, range_param=range_param)
+        domain = request.build_absolute_uri("/").rstrip("/")
+        data = AnalyticsService.get_full_link_analytics(
+            link, range_param=range_param, domain=domain
+        )
         return Response({"success": True, "data": data})
 
 

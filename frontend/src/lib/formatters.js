@@ -35,3 +35,16 @@ export function truncateUrl(url, maxLength = 45) {
   if (url.length <= maxLength) return url;
   return url.substring(0, maxLength) + "…";
 }
+
+export function formatShortUrl(shortUrl, shortCode) {
+  const defaultBase = import.meta.env.VITE_PUBLIC_SHORT_URL_BASE || "https://linkpulse-api-iibx.onrender.com";
+  const cleanBase = defaultBase.replace(/\/$/, "");
+
+  if (shortUrl && !shortUrl.includes("localhost") && !shortUrl.includes("127.0.0.1")) {
+    return shortUrl;
+  }
+  if (shortCode) {
+    return `${cleanBase}/${shortCode}`;
+  }
+  return shortUrl || cleanBase;
+}

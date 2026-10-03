@@ -48,7 +48,14 @@ class ShortLink(BaseModel):
         return False
 
     def get_short_url(self, domain: str = None) -> str:
+        default_domain = getattr(
+            settings, "DEFAULT_DOMAIN", "https://linkpulse-api-iibx.onrender.com"
+        )
+        if not domain or ("localhost" in domain or "127.0.0.1" in domain):
+            domain = default_domain
+
         base = (
-            domain or getattr(settings, "DEFAULT_DOMAIN", "http://localhost:8000")
+            domain
+            or getattr(settings, "DEFAULT_DOMAIN", "https://linkpulse-api-iibx.onrender.com")
         ).rstrip("/")
         return f"{base}/{self.short_code}"

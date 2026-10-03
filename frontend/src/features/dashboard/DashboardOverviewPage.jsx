@@ -21,7 +21,7 @@ import { linksApi } from "../../api/links.api";
 import { queryKeys } from "../../lib/queryKeys";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useCopy } from "../../hooks/useCopy";
-import { formatNumber, truncateUrl } from "../../lib/formatters";
+import { formatNumber, truncateUrl, formatShortUrl } from "../../lib/formatters";
 import { ApplicationShell } from "../../components/layout/ApplicationShell";
 import { Card, CardHeader } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
@@ -212,7 +212,7 @@ export function DashboardOverviewPage() {
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end space-x-1">
                           <button
-                            onClick={() => copy(link.short_url, "Short URL")}
+                            onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                             title="Copy Short URL"
                             className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
                           >

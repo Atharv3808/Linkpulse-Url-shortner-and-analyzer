@@ -56,6 +56,10 @@ class TestAnalyticsCorrectness:
         assert response.status_code == status.HTTP_200_OK
         data = response.data["data"]
 
+        # Link metadata check
+        assert "short_url" in data["link"]
+        assert data["link"]["short_code"] == "analytics123"
+
         # Summary check
         assert data["summary"]["total_clicks"] == 4
         assert data["summary"]["unique_visitors"] == 3  # v1, v2, v3

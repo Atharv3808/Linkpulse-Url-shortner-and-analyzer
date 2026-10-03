@@ -14,7 +14,7 @@ import {
 import { linksApi } from "../../api/links.api";
 import { queryKeys } from "../../lib/queryKeys";
 import { useCopy } from "../../hooks/useCopy";
-import { formatNumber, formatDate, truncateUrl } from "../../lib/formatters";
+import { formatNumber, formatDate, truncateUrl, formatShortUrl } from "../../lib/formatters";
 import { ApplicationShell } from "../../components/layout/ApplicationShell";
 import { Card } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
@@ -186,7 +186,7 @@ export function LinksPage() {
                           <div className="flex items-center justify-end space-x-1">
                             <button
                               type="button"
-                              onClick={() => copy(link.short_url, "Short URL")}
+                              onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                               title="Copy Short URL"
                               className="p-1.5 text-txt-muted hover:text-txt-primary hover:bg-bg-elevated rounded-md transition-colors"
                             >
@@ -259,7 +259,7 @@ export function LinksPage() {
                       <div className="flex items-center space-x-2">
                         <button
                           type="button"
-                          onClick={() => copy(link.short_url, "Short URL")}
+                          onClick={() => copy(formatShortUrl(link.short_url, link.short_code), "Short URL")}
                           className="px-2.5 py-1 text-[11px] font-medium bg-bg-elevated text-txt-primary rounded-md border border-border-subtle"
                         >
                           Copy

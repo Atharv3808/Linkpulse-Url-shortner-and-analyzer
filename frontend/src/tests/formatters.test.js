@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatNumber, truncateUrl, formatDate } from "../lib/formatters";
+import { formatNumber, truncateUrl, formatDate, formatShortUrl } from "../lib/formatters";
 
 describe("Formatters Unit Tests", () => {
   it("formats numbers with comma separators", () => {
@@ -17,5 +17,11 @@ describe("Formatters Unit Tests", () => {
   it("formats ISO date strings", () => {
     const dateStr = "2026-10-01T20:00:00Z";
     expect(formatDate(dateStr)).toContain("2026");
+  });
+
+  it("formats short URL using public domain", () => {
+    expect(formatShortUrl(null, "AqUcFM")).toBe("https://linkpulse-api-iibx.onrender.com/AqUcFM");
+    expect(formatShortUrl("http://localhost:8000/AqUcFM", "AqUcFM")).toBe("https://linkpulse-api-iibx.onrender.com/AqUcFM");
+    expect(formatShortUrl("https://custom-domain.com/AqUcFM", "AqUcFM")).toBe("https://custom-domain.com/AqUcFM");
   });
 });

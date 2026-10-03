@@ -6,6 +6,7 @@ import { Drawer } from "../../components/ui/Modal";
 import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
 import { useCopy } from "../../hooks/useCopy";
+import { formatShortUrl } from "../../lib/formatters";
 
 export function CreateLinkModal({ isOpen, onClose }) {
   const queryClient = useQueryClient();
@@ -23,8 +24,8 @@ export function CreateLinkModal({ isOpen, onClose }) {
       queryClient.invalidateQueries({ queryKey: ["links"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
       const newLink = res.data;
-      if (newLink?.short_url) {
-        copy(newLink.short_url, "Short URL");
+      if (newLink) {
+        copy(formatShortUrl(newLink.short_url, newLink.short_code), "Short URL");
       }
       resetForm();
       onClose();

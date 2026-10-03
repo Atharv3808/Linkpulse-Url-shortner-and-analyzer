@@ -228,7 +228,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
 # LinkPulse Specific
-DEFAULT_DOMAIN = os.getenv("DEFAULT_DOMAIN", "http://localhost:8000")
+DEFAULT_DOMAIN = os.getenv("DEFAULT_DOMAIN", "https://linkpulse-api-iibx.onrender.com")
 GEOIP_DATABASE_PATH = os.getenv("GEOIP_DATABASE_PATH", "")
 CLICK_EVENT_RETENTION_DAYS = int(os.getenv("CLICK_EVENT_RETENTION_DAYS", 365))
 RATE_LIMIT_ENABLED = os.getenv("RATE_LIMIT_ENABLED", "True").lower() in (

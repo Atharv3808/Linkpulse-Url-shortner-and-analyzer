@@ -280,7 +280,9 @@ class AnalyticsService:
         ]
 
     @classmethod
-    def get_full_link_analytics(cls, link: ShortLink, range_param: str = "30d") -> dict:
+    def get_full_link_analytics(
+        cls, link: ShortLink, range_param: str = "30d", domain: str = None
+    ) -> dict:
         summary = cls.get_link_summary(link)
         timeline = cls.get_timeline(link, range_param)
         countries = cls.get_countries(link, range_param)
@@ -305,8 +307,11 @@ class AnalyticsService:
             "link": {
                 "id": str(link.id),
                 "short_code": link.short_code,
+                "short_url": link.get_short_url(domain),
                 "original_url": link.original_url,
                 "title": link.title,
+                "is_active": link.is_active,
+                "click_count": link.click_count,
                 "created_at": link.created_at.isoformat(),
             },
             "summary": summary,
